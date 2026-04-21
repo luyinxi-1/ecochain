@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.village.mapper.VillageConstructionProjectProblemTotalMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.village.entity.VillageConstructionProjectProblemTotal">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="examiner" property="examiner" />
+        <result column="examine_datetime" property="examineDatetime" />
+        <result column="examine_department" property="examineDepartment" />
+        <result column="name" property="name" />
+        <result column="urgent_level" property="urgentLevel" />
+        <result column="content" property="content" />
+        <result column="corroboration" property="corroboration" />
+        <result column="reply" property="reply" />
+        <result column="reply_datetime" property="replyDatetime" />
+        <result column="reply_content" property="replyContent" />
+        <result column="annex" property="annex" />
+        <result column="project_number" property="projectNumber" />
+        <result column="recheck_result" property="recheckResult" />
+        <result column="contact_person" property="contactPerson" />
+        <result column="problem_status" property="problemStatus" />
+        <result column="problem_type" property="problemType" />
+        <result column="area_id" property="areaId" />
+    </resultMap>
+    <select id="selectVillageConstructionProjectProblem"
+            resultType="upc.c505.modular.village.controller.param.VillageConstructionProjectProblemTotalReturnParam">
+        SELECT
+        MAX(project.operation_datetime) AS operationDatetime,
+        project.project_number AS projectNumber,
+        COUNT(CASE WHEN problem_status = 1 THEN 1 END) AS unsolvedNumber,
+        COUNT(CASE WHEN problem_status = 2 THEN 1 END) AS solvedNumber,
+        COUNT(CASE WHEN problem_status = 3 THEN 1 END) AS recheckToBeRectifiedNumber,
+        COUNT(CASE WHEN problem_status = 4 THEN 1 END) AS notReinspectedNumber
+        FROM
+        village_construction_project_problem_total problem RIGHT JOIN village_construction_project_details AS project ON problem.project_number = project.project_number
+        <if test="villageConstructionProjectProblemTotalSearchParam.problemType != null
+        and villageConstructionProjectProblemTotalSearchParam.problemType != ''">
+            AND problem.problem_type = #{villageConstructionProjectProblemTotalSearchParam.problemType}
+        </if>
+        <if test="villageConstructionProjectProblemTotalSearchParam.name != null
+        and villageConstructionProjectProblemTotalSearchParam.name != ''">
+            AND problem.name like CONCAT('%',#{villageConstructionProjectProblemTotalSearchParam.name},'%')
+        </if>
+        WHERE 1=1
+        <if test="areaIdSearchList != null and areaIdSearchList.size() > 0">
+            AND project.area_id IN
+            <foreach collection="areaIdSearchList" separator="," open="(" close=")" item="areaId">
+                #{areaId}
+            </foreach>
+        </if>
+        <if test="areaId != null and areaId != ''">
+            AND project.area_id = #{areaId}
+        </if>
+        <if test="villageConstructionProjectProblemTotalSearchParam.projectNumber != null
+        and villageConstructionProjectProblemTotalSearchParam.projectNumber != ''">
+            AND project.project_number = #{villageConstructionProjectProblemTotalSearchParam.projectNumber}
+        </if>
+        <if test="supervisionCompanyCreditCode != null and supervisionCompanyCreditCode != ''">
+            AND project.supervision_credit_code = #{supervisionCompanyCreditCode}
+        </if>
+        <if test="constructionCreditCode != null and constructionCreditCode != ''">
+            AND project.construction_credit_code = #{constructionCreditCode}
+        </if>
+        <if test="villageConstructionProjectProblemTotalSearchParam.projectName != null
+        and villageConstructionProjectProblemTotalSearchParam.projectName != ''">
+            AND project.project_name like CONCAT('%',#{villageConstructionProjectProblemTotalSearchParam.projectName},'%')
+        </if>
+        <if test="villageConstructionProjectProblemTotalSearchParam.constructionName != null
+        and villageConstructionProjectProblemTotalSearchParam.constructionName != ''">
+            AND project.construction_name = #{villageConstructionProjectProblemTotalSearchParam.constructionName}
+        </if>
+        <if test="villageConstructionProjectProblemTotalSearchParam.supervisionName != null
+        and villageConstructionProjectProblemTotalSearchParam.supervisionName != ''">
+            AND project.supervision_name = #{villageConstructionProjectProblemTotalSearchParam.supervisionName}
+        </if>
+        <if test="villageConstructionProjectProblemTotalSearchParam.startTime != null
+        and villageConstructionProjectProblemTotalSearchParam.startTime != ''
+        and villageConstructionProjectProblemTotalSearchParam.endTime != null
+        and villageConstructionProjectProblemTotalSearchParam.endTime != ''">
+            AND project.add_datetime BETWEEN #{villageConstructionProjectProblemTotalSearchParam.startTime} AND #{villageConstructionProjectProblemTotalSearchParam.endTime}
+        </if>
+        GROUP BY
+        project.project_number
+<!--        ORDER BY add_datetime ASC-->
+    </select>
+    <select id="selectPageVillageProject"
+            resultType="upc.c505.modular.village.controller.param.VillageConstructionProjectDetailsReturnParam">
+        SELECT
+        MAX(project.operation_datetime) AS operationDatetime,
+        project.project_number AS projectNumber,
+        COUNT(CASE WHEN problem_type = 1 <if
+            test="param.solvedProblemStatus != null and param.solvedProblemStatus != 0">
+        AND problem_status = #{param.solvedProblemStatus}
+    </if> THEN 1 END) AS puzzlingProblem,
+        COUNT(CASE WHEN problem_type = 2 <if
+            test="param.solvedProblemStatus != null and param.solvedProblemStatus != 0">
+        AND problem_status = #{param.solvedProblemStatus}
+    </if> THEN 1 END) AS onsiteProblem,
+        COUNT(CASE WHEN problem_type = 3 <if
+            test="param.solvedProblemStatus != null and param.solvedProblemStatus != 0">
+        AND problem_status = #{param.solvedProblemStatus}
+    </if> THEN 1 END) AS remoteProblem
+        FROM
+        village_construction_project_problem_total AS problem RIGHT JOIN village_construction_project_details AS project
+        ON problem.project_number = project.project_number
+        WHERE 1=1
+        <if test="areaIdSearchList != null and areaIdSearchList.size() > 0">
+            AND project.area_id IN
+            <foreach collection="areaIdSearchList" separator="," open="(" close=")" item="areaId">
+                #{areaId}
+            </foreach>
+        </if>
+        <if test="areaId != null and areaId != ''">
+            AND project.area_id = #{areaId}
+        </if>
+        <if test="param.searchParam != null and param.searchParam != ''">
+            AND (
+            project.project_name LIKE CONCAT('%',#{param.searchParam},'%')
+            OR
+            project.project_number LIKE CONCAT('%',#{param.searchParam},'%')
+            )
+        </if>
+        <if test="param.projectType != null and param.projectType != ''">
+            AND project.project_type = #{param.projectType}
+        </if>
+        <if test="param.contractNumber != null and param.contractNumber != ''">
+            AND project.contract_number = #{param.contractNumber}
+        </if>
+        <if test="supervisionCompanyCreditCode != null and supervisionCompanyCreditCode != ''">
+            AND project.supervision_credit_code = #{supervisionCompanyCreditCode}
+        </if>
+        <if test="constructionCreditCode != null and constructionCreditCode != ''">
+            AND project.construction_credit_code = #{constructionCreditCode}
+        </if>
+        <if test="param.constructionName != null and param.constructionName != ''">
+            AND project.construction_name = #{param.constructionName}
+        </if>
+        <if test="param.supervisionName != null and param.supervisionName != ''">
+            AND project.supervision_name = #{param.supervisionName}
+        </if>
+        <if test="param.startDate != null and param.startDate != '' and param.endDate != null and param.endDate != ''">
+            AND project.add_datetime BETWEEN #{param.startDate} AND #{param.endDate}
+        </if>
+        GROUP BY
+        project.project_number
+    </select>
+
+</mapper>

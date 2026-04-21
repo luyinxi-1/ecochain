@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.villageiot.mapper.VideoHostConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.villageiot.entity.VideoHostConfig">
+        <id column="id" property="id" />
+        <result column="device_type" property="deviceType" />
+        <result column="protocol" property="protocol" />
+        <result column="host_address" property="hostAddress" />
+        <result column="appkey" property="appkey" />
+        <result column="appsecret" property="appSecret" />
+        <result column="add_time" property="addTime" />
+        <result column="operator" property="operator" />
+        <result column="operate_time" property="operateTime" />
+        <result column="operate_ip" property="operateIp" />
+        <result column="other_password" property="otherPassword" />
+    </resultMap>
+
+</mapper>

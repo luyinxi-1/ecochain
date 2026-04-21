@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.employeetrain.mapper.ExamQuestionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.employeetrain.entity.ExamQuestion">
+        <id column="id" property="id" />
+        <result column="question_type" property="questionType" />
+        <result column="question_name" property="questionName" />
+        <result column="question_item_first" property="questionItemFirst" />
+        <result column="question_item_second" property="questionItemSecond" />
+        <result column="question_item_third" property="questionItemThird" />
+        <result column="question_item_fourth" property="questionItemFourth" />
+        <result column="question_answer" property="questionAnswer" />
+        <result column="industry_type" property="industryType" />
+        <result column="work_type" property="workType" />
+        <result column="operate_datetime" property="operateDatetime" />
+        <result column="operate_person" property="operatePerson" />
+        <result column="operate_ip" property="operateIp" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="unified_code" property="unifiedCode" />
+        <result column="creator" property="creator" />
+    </resultMap>
+
+</mapper>

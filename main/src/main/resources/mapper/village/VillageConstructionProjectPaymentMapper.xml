@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.village.mapper.VillageConstructionProjectPaymentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.village.entity.VillageConstructionProjectPayment">
+        <id column="id" property="id" />
+        <result column="payment_name" property="paymentName" />
+        <result column="payment_money" property="paymentMoney" />
+        <result column="payment_certificate" property="paymentCertificate" />
+        <result column="payment_date" property="paymentDate" />
+        <result column="project_number" property="projectNumber" />
+    </resultMap>
+
+</mapper>

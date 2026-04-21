@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.villageiot.mapper.VideoConfigCommonMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.villageiot.entity.VideoConfigCommon">
+        <id column="id" property="id" />
+        <result column="monitor_attributes" property="monitorAttributes" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="monitor_group_name" property="monitorGroupName" />
+        <result column="ent_credit_code" property="entCreditCode" />
+        <result column="device_type" property="deviceType" />
+        <result column="current_device_number" property="currentDeviceNumber" />
+        <result column="coa_type" property="coaType" />
+        <result column="coa_code" property="coaCode" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+</mapper>

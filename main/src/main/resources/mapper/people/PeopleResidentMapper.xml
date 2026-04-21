@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.people.mapper.PeopleResidentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.people.entity.PeopleResident">
+        <id column="people_id" property="peopleId" />
+        <result column="phr_population_id" property="phrPopulationId" />
+        <result column="person_name" property="personName" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="sex" property="sex" />
+        <result column="identity_number" property="identityNumber" />
+        <result column="contact_phone" property="contactPhone" />
+        <result column="status" property="status" />
+        <result column="village_id" property="villageId" />
+        <result column="village_duty_person_id" property="villageDutyPersonId" />
+        <result column="village_duty_person" property="villageDutyPerson" />
+        <result column="is_local" property="isLocal" />
+        <result column="is_resident" property="isResident" />
+        <result column="is_priority" property="isPriority" />
+        <result column="household_location" property="householdLocation" />
+        <result column="birth_date" property="birthDate" />
+        <result column="ethnicity" property="ethnicity" />
+        <result column="current_address" property="currentAddress" />
+        <result column="education_level" property="educationLevel" />
+        <result column="political_status" property="politicalStatus" />
+        <result column="party_member_id" property="partyMemberId" />
+        <result column="marital_status" property="maritalStatus" />
+        <result column="current_workplace" property="currentWorkplace" />
+        <result column="identity_date_start" property="identityDateStart" />
+        <result column="identity_date_end" property="identityDateEnd" />
+        <result column="issuing_organization" property="issuingOrganization" />
+        <result column="population_composition" property="populationComposition" />
+        <result column="resident_status" property="residentStatus" />
+        <result column="registration_id" property="registrationId" />
+        <result column="registration_name" property="registrationName" />
+        <result column="house_relationship" property="houseRelationship" />
+        <result column="registration_property" property="registrationProperty" />
+        <result column="priority_person_type" property="priorityPersonType" />
+        <result column="priority_registe_date" property="priorityRegisteDate" />
+        <result column="priority_duty_person" property="priorityDutyPerson" />
+        <result column="priority_duty_contact" property="priorityDutyContact" />
+        <result column="priority_emergency_contact" property="priorityEmergencyContact" />
+        <result column="remark" property="remark" />
+        <result column="file" property="file" />
+        <result column="source" property="source" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+</mapper>

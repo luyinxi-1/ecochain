@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.employeetrain.mapper.EmployeeExamMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.employeetrain.entity.EmployeeExam">
+        <id column="id" property="id" />
+        <result column="employee_id" property="employeeId" />
+        <result column="employee_id_number" property="employeeIdNumber" />
+        <result column="exam_status" property="examStatus" />
+        <result column="exam_score" property="examScore" />
+        <result column="exam_time" property="examTime" />
+        <result column="exam_date" property="examDate" />
+        <result column="paper_id" property="paperId" />
+        <result column="paper_name" property="paperName" />
+        <result column="paper_start_time" property="paperStartTime" />
+        <result column="paper_end_time" property="paperEndTime" />
+        <result column="year" property="year" />
+        <result column="operate_datetime" property="operateDatetime" />
+        <result column="operate_person" property="operatePerson" />
+        <result column="operate_ip" property="operateIp" />
+        <result column="unified_code" property="unifiedCode" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="creator" property="creator" />
+    </resultMap>
+    <insert id="insertExamInfo">
+        insert into employee_exam
+        (id,employee_id,employee_id_number,exam_status,exam_score,exam_time,exam_date,
+         paper_id,paper_name,paper_start_time,paper_end_time)
+        values
+            (null,#{employeeId},#{employeeIdNumber},#{examStatus},#{examScore},#{examTime},#{examDate},
+             #{paperId},#{paperName},#{paperStartTime},#{paperEndTime})
+    </insert>
+    <select id="selectLatestExam" resultType="upc.c505.modular.employeetrain.entity.EmployeeExam">
+        select *
+        from employee_exam
+        where id =
+              (
+                  select max(id) as maxId
+                  from employee_exam
+                  where employee_id_number = #{idNumber} and exam_date &gt;= #{yearStart} and exam_date &lt; #{yearEnd}
+              )
+    </select>
+    <select id="getExamNewPage" resultType="upc.c505.modular.employeetrain.controller.param.EmployeeExamParam">
+        select *,required_class_hour as requiredMinutes
+        from people_enterprise as s
+        left join  (
+        select a.employee_id_number as employee_id_number,sum(a.material_learn_length) as learningMinutes
+        from (
+        select distinct employee_id_number,material_id,material_learn_length
+        from employee_train
+        where operate_datetime &lt; #{yearEnd} and operate_datetime &gt; #{yearStart} and record_status = 1
+        ) as a
+        group by a.employee_id_number
+        ) as b on (s.identity_number = b.employee_id_number)
+        left join (
+        SELECT
+        employee_id_number as new_employee_id_number,exam_status
+        FROM
+        employee_exam
+        where id in
+        (
+        SELECT
+        max( id ) AS maxId
+        FROM
+        employee_exam
+        WHERE operate_datetime &lt; #{yearEnd} and operate_datetime &gt; #{yearStart}
+        GROUP BY employee_id_number
+        )
+        ) as c on (s.identity_number = c.new_employee_id_number)
+        <trim prefix="where" prefixOverrides="and| or">
+            <if test="searchParam.trainStatus != null ">
+                and
+                <if test="searchParam.trainStatus == 0">
+                    (learningMinutes is null or learningMinutes = 0 or learningMinutes = ' ')
+                </if>
+                <if test="searchParam.trainStatus == 1">
+                    learningMinutes &lt; required_class_hour and learningMinutes != 0
+                </if>
+                <if test="searchParam.trainStatus == 2">
+                    learningMinutes &gt;= required_class_hour
+                </if>
+            </if>
+            <if test="searchParam.examStatus != null ">
+                and
+                <if test="searchParam.examStatus == 0">
+                    (exam_status is null or exam_status = ' ' or exam_status = 0)
+                </if>
+                <if test="searchParam.examStatus == 1">
+                    exam_status = 1
+                </if>
+                <if test="searchParam.examStatus == 2">
+                    exam_status = 2
+                </if>
+            </if>
+            <if test="searchParam.townList != null and searchParam.townList.size() > 0">
+                and town_id in
+                <foreach close=")" collection="searchParam.townList" item="town" open="(" separator=",">
+                    #{town}
+                </foreach>
+            </if>
+            <if test="searchParam.townId != null and searchParam.townId != '' and (searchParam.userType == 2 || searchParam.userType == 3)">
+                and ${searchParam.townId} in
+                <foreach close=")" collection="searchParam.townList" item="town" open="(" separator=",">
+                    #{town}
+                </foreach>
+                and town_id = #{searchParam.townId}
+            </if>
+            <if test=" searchParam.townId != null and searchParam.townId != '' and searchParam.userType == -1" > #{searchParam.userType}
+                and town_id = #{searchParam.townId}
+            </if>
+            <if test="searchParam.multiParam != null and searchParam.multiParam != ''">
+                and (
+                enterprise_name like concat('%',#{searchParam.multiParam},'%') or
+                user_name like concat('%',#{searchParam.multiParam},'%') or
+                id_number like concat('%',#{searchParam.multiParam},'%')
+                )
+            </if>
+            <if test="searchParam.creditCode != null and searchParam.creditCode != ''">
+                and enterprise_credit_code = #{searchParam.creditCode}
+            </if>
+            <if test="searchParam.industryType != null and searchParam.industryType != ''">
+                and industry_type = #{searchParam.industryType}
+            </if>
+            <if test="searchParam.workType != null and searchParam.workType != ''">
+                and work_type_name = #{searchParam.workType}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

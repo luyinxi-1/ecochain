@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.grassroots.mapper.GrassrootsSnapshotMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.grassroots.entity.GrassrootsSnapshot">
+        <id column="id" property="id" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="snapshot_report_person" property="snapshotReportPerson" />
+        <result column="snapshot_report_location" property="snapshotReportLocation" />
+        <result column="snapshot_report_date" property="snapshotReportDate" />
+        <result column="snapshot_report_content" property="snapshotReportContent" />
+        <result column="snapshot_report_file" property="snapshotReportFile" />
+        <result column="snapshot_reply_person" property="snapshotReplyPerson" />
+        <result column="snapshot_reply_date" property="snapshotReplyDate" />
+        <result column="snapshot_reply_content" property="snapshotReplyContent" />
+        <result column="snapshot_reply_picture" property="snapshotReplyPicture" />
+        <result column="snapshot_dept_id" property="snapshotDeptId" />
+        <result column="snapshot_dept_name" property="snapshotDeptName" />
+        <result column="message_status" property="messageStatus" />
+        <result column="current_focus" property="currentFocus" />
+        <result column="improvement_dept_id" property="improvementDeptId" />
+        <result column="improvement_dept_name" property="improvementDeptName" />
+        <result column="improvement_reply_person" property="improvementReplyPerson" />
+        <result column="improvement_reply_content" property="improvementReplyContent" />
+        <result column="improvement_reply_date" property="improvementReplyDate" />
+        <result column="improvement_reply_picture" property="improvementReplyPicture" />
+        <result column="event_property" property="eventProperty" />
+        <result column="event_type" property="eventType" />
+        <result column="reply_status" property="replyStatus" />
+        <result column="snapshot_type" property="snapshotType" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <select id="countSnapshotNumberByType"
+        resultType="upc.c505.modular.grassroots.controller.param.SnapshotTypeCountReturnParam">
+        select
+            (select count(*)
+             from grassroots_snapshot) as snapShotTotal,
+            (select count(*)
+             from grassroots_snapshot
+             where reply_status = 0) as noReply,
+            (select count(*)
+             from grassroots_snapshot
+             where reply_status = 1) as reply
+
+    </select>
+
+</mapper>

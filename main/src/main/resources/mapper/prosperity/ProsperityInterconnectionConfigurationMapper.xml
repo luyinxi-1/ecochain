@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.prosperity.mapper.ProsperityInterconnectionConfigurationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.prosperity.entity.ProsperityInterconnectionConfiguration">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="large_class_num" property="largeClassNum" />
+        <result column="large_class_name" property="largeClassName" />
+        <result column="small_class_num" property="smallClassNum" />
+        <result column="small_class_name" property="smallClassName" />
+        <result column="small_class_picture" property="smallClassPicture" />
+        <result column="town_street" property="townStreet" />
+    </resultMap>
+
+</mapper>

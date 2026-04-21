@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.maintain.mapper.MaintainDairyMaintainMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.maintain.entity.MaintainDairyMaintain">
+        <id column="maintain_dairy_maintain_id" property="maintainDairyMaintainId" />
+        <result column="maintain_facilities_id" property="maintainFacilitiesId" />
+        <result column="maintain_facilities_name" property="maintainFacilitiesName" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="maintain_datetime" property="maintainDatetime" />
+        <result column="maintain_person_name" property="maintainPersonName" />
+        <result column="maintain_company" property="maintainCompany" />
+        <result column="maintain_location" property="maintainLocation" />
+        <result column="item_name" property="itemName" />
+        <result column="maintain_classification" property="maintainClassification" />
+        <result column="item_description" property="itemDescription" />
+        <result column="maintain_picture" property="maintainPicture" />
+        <result column="problem_type" property="problemType" />
+        <result column="cause" property="cause" />
+        <result column="repair_time" property="repairTime" />
+        <result column="repair_person" property="repairPerson" />
+        <result column="repair_location" property="repairLocation" />
+        <result column="repair_result" property="repairResult" />
+        <result column="repair_picture" property="repairPicture" />
+        <result column="repair_estimated_cost" property="repairEstimatedCost" />
+        <result column="repair_status" property="repairStatus" />
+        <result column="repair_cost_time" property="repairCostTime" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <select id="selectNeedToDoDairyMaintainList"
+            resultType="upc.c505.modular.maintain.controller.param.DairyMaintainPageReturnParam">
+        select
+--             inf.id,
+--             dairy.maintain_dairy_maintain_id,
+--             dairy.maintain_datetime,
+--             dairy.item_name,
+--             inf.device_type,
+--             inf.device_type_breakdown,
+--             inf.title,
+--             inf.management_department,
+--             inf.head,
+--             inf.contact_number,
+--             dairy.maintain_classification,
+--             dairy.repair_status
+        inf.*,
+        dairy.*
+        from maintain_Infrastructure inf
+            inner join maintain_dairy_maintain dairy
+                on inf.id = dairy.maintain_facilities_id
+        <where>
+            dairy.maintain_classification = '3'
+            <if test="param.deviceType != null and param.deviceType !=''">
+                and inf.device_type = #{param.deviceType}
+            </if>
+            <if test="param.deviceTypeBreakdown != null and param.deviceTypeBreakdown !=''">
+                and inf.device_type_breakdown = #{param.deviceTypeBreakdown}
+            </if>
+            <if test="param.repairStatus != null and param.repairStatus !=''">
+                and dairy.repair_status = #{param.repairStatus}
+            </if>
+            <if test="param.searchParam != null and param.searchParam !=''">
+                and dairy.item_name like concat ('%', #{param.searchParam}, '%')
+            </if>
+            <if test="startTime != null and endTime != null">
+                and cast(dairy.maintain_datetime as DATETIME) BETWEEN #{startTime} and #{endTime}
+            </if>
+            And inf.area_id IN
+            <foreach collection="areaIdList" item="areaId" separator="," open="(" close=")">
+                #{areaId}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectOutOfRepairMaintainList"
+            resultType="upc.c505.modular.maintain.controller.param.MaintainApprovalCollectionPageReturnParam">
+        select
+        inf.id,
+        inf.device_type,
+        inf.device_type_breakdown,
+        inf.title,
+        inf.management_department,
+        inf.head,
+        inf.contact_number,
+        dairy.maintain_classification,
+        dairy.repair_status
+        from maintain_Infrastructure inf
+        inner join maintain_dairy_maintain dairy
+        on inf.id = dairy.maintain_facilities_id
+        <where>
+            dairy.maintain_classification = '4'
+            <if test="param.deviceType != null and param.deviceType !=''">
+                and inf.device_type = #{param.deviceType}
+            </if>
+            <if test="param.deviceTypeBreakdown != null and param.deviceTypeBreakdown !=''">
+                and inf.device_type_breakdown = #{param.deviceTypeBreakdown}
+            </if>
+            <if test="param.repairStatus != null and param.repairStatus !=''">
+                and dairy.repair_status = #{param.repairStatus}
+            </if>
+            <if test="param.searchParam != null and param.searchParam !=''">
+                and dairy.item_name like concat ('%', #{param.searchParam}, '%')
+            </if>
+            <if test="startTime != null and endTime != null">
+                and cast(dairy.maintain_datetime as DATETIME) BETWEEN #{startTime} and #{endTime}
+            </if>
+            <if test="areaIdList != null and areaIdList.size()!=0 ">
+                And inf.area_id IN
+                <foreach collection="areaIdList" item="areaId" separator="," open="(" close=")">
+                    #{areaId}
+                </foreach>
+            </if>
+            <if test="param.maintainCompanyCreditCode != null and param.maintainCompanyCreditCode !=''">
+                and inf.maintain_company_credit_code = #{param.maintainCompanyCreditCode}
+            </if>
+        </where>
+    </select>
+    <select id="analysisOfMaintainProcedureByType"
+            resultType="upc.c505.modular.maintain.controller.param.DailyMaintainTypeAnalysisReturnParam">
+        SELECT
+        mi.device_type as infrastructureType,
+        COUNT(*) AS count
+        FROM
+        maintain_dairy_maintain mdm
+        JOIN maintain_Infrastructure mi
+        ON mdm.maintain_facilities_id = mi.id
+        <where>
+            <if test="deviceType != null and deviceType !=''">
+                AND mi.device_type = #{deviceType}
+            </if>
+            <if test="maintainCompanyCreditCode != null and maintainCompanyCreditCode !=''">
+                AND mdm.maintain_company_credit_code = #{maintainCompanyCreditCode}
+            </if>
+            <if test="maintainFacilitiesIdList != null and maintainFacilitiesIdList.size() > 0">
+                AND mdm.maintain_facilities_id IN
+                <foreach collection="maintainFacilitiesIdList" item="facilitiesId" separator="," open="(" close=")">
+                    #{facilitiesId}
+                </foreach>
+            </if>
+            <if test="areaSearchIdList != null and areaSearchIdList.size() > 0">
+                AND mdm.area_id IN
+                <foreach collection="areaSearchIdList" item="areaId" separator="," open="(" close=")">
+                    #{areaId}
+                </foreach>
+            </if>
+            <if test="formattedFirstDay != null and formattedLastDay != null">
+                AND mdm.add_datetime BETWEEN #{formattedFirstDay} AND #{formattedLastDay}
+            </if>
+        </where>
+        GROUP BY
+        mi.device_type;
+    </select>
+
+
+
+    <select id="analysisOfMaintainProcedureByTypeDetail"
+            resultType="upc.c505.modular.maintain.controller.param.DailyMaintainTypeAnalysisReturnParam">
+        SELECT
+        mi.device_type_breakdown as infrastructureType,
+        COUNT(*) AS count
+        FROM
+        maintain_dairy_maintain mdm
+        JOIN maintain_Infrastructure mi ON mdm.maintain_facilities_id = mi.id
+        <where>
+            <if test="deviceType != null and deviceType !=''">
+                AND mi.device_type = #{deviceType}
+            </if>
+            <if test="maintainCompanyCreditCode != null and maintainCompanyCreditCode !=''">
+                AND mdm.maintain_company_credit_code = #{maintainCompanyCreditCode}
+            </if>
+            <if test="maintainFacilitiesIdList != null and maintainFacilitiesIdList.size() > 0">
+                AND mdm.maintain_facilities_id IN
+                <foreach collection="maintainFacilitiesIdList" item="facilitiesId" separator="," open="(" close=")">
+                    #{facilitiesId}
+                </foreach>
+            </if>
+            <if test="areaSearchIdList != null and areaSearchIdList.size() > 0">
+                AND mdm.area_id IN
+                <foreach collection="areaSearchIdList" item="areaId" separator="," open="(" close=")">
+                    #{areaId}
+                </foreach>
+            </if>
+            <if test="formattedFirstDay != null and formattedLastDay != null">
+                AND mdm.add_datetime BETWEEN #{formattedFirstDay} AND #{formattedLastDay}
+            </if>
+        </where>
+        GROUP BY
+        mi.device_type_breakdown;
+    </select>
+
+
+
+</mapper>

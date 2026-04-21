@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.dict.mapper.SysDictTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.dict.entity.SysDictType">
+        <id column="dict_type_id" property="dictTypeId"/>
+        <result column="dict_name" property="dictName"/>
+        <result column="dict_type" property="dictType"/>
+        <result column="area_id" property="areaId"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="creator" property="creator"/>
+        <result column="add_date_time" property="addDateTime"/>
+        <result column="operator" property="operator"/>
+        <result column="operation_date_time" property="operationDateTime"/>
+    </resultMap>
+    <sql id="selectDictTypeVo">
+        select dict_type_id, dict_name, dict_type,area_id, status, creator, add_date_time, remark
+        from sys_dict_type
+    </sql>
+
+    <select id="selectDictTypeList" parameterType="upc.c505.modular.dict.entity.SysDictType" resultMap="BaseResultMap">
+        <include refid="selectDictTypeVo"/>
+        <where>
+            1=1
+            <if test="dictType.dictName != null and dictType.dictName != ''">
+                AND dict_name like concat('%', #{dictType.dictName}, '%')
+            </if>
+            <if test="dictType.status != null and dictType.status != ''">
+                AND status = #{dictType.status}
+            </if>
+            <if test="dictType.dictType != null and dictType.dictType != ''">
+                AND dict_type like concat('%', #{dictType.dictType}, '%')
+            </if>
+            <if test="dictType.startTime != null and dictType.endTime != null ">
+                AND add_date_time between #{dictType.startTime} and #{dictType.endTime}
+            </if>
+            AND area_id IN
+            <foreach collection="dictType.areaIdList" item="areaId" separator="," open="(" close=")">
+                #{areaId}
+            </foreach>
+        </where>
+        <if test="isAsc = 0">
+            ORDER BY dict_type_id desc
+        </if>
+        <if test="isAsc = 1">
+            ORDER by dict_type_id asc
+        </if>
+
+    </select>
+
+    <select id="selectDictTypeAll" resultMap="BaseResultMap">
+        <include refid="selectDictTypeVo"/>
+    </select>
+
+    <select id="selectDictTypeById" parameterType="Integer" resultMap="BaseResultMap">
+        <include refid="selectDictTypeVo"/>
+        where dict_type_id = #{dictId}
+    </select>
+
+    <select id="selectDictTypeByType" parameterType="String" resultMap="BaseResultMap">
+        <include refid="selectDictTypeVo"/>
+        where dict_type = #{dictType}
+    </select>
+
+    <select id="checkDictTypeUnique" parameterType="String" resultMap="BaseResultMap">
+        <include refid="selectDictTypeVo"/>
+        where dict_type = #{dictType} limit 1
+    </select>
+
+    <delete id="deleteDictTypeById" parameterType="Integer">
+        delete
+        from sys_dict_type
+        where dict_type_id = #{dictId}
+    </delete>
+
+    <delete id="deleteDictTypeByIds" parameterType="Integer">
+        delete from sys_dict_type where dict_type_id in
+        <foreach collection="array" item="dictId" open="(" separator="," close=")">
+            #{dictId}
+        </foreach>
+    </delete>
+
+    <update id="updateDictType" parameterType="upc.c505.modular.dict.entity.SysDictType">
+        update sys_dict_type
+        <set>
+            <if test="dictType.dictName != null and dictType.dictName != ''">dict_name = #{dictType.dictName},</if>
+            <if test="dictType.dictType != null and dictType.dictType != ''">dict_type = #{dictType.dictType},</if>
+            <if test="dictType.status != null">status = #{dictType.status},</if>
+            <if test="dictType.remark != null">remark = #{dictType.remark},</if>
+            <if test="dictType.operator != null and dictType.operator != ''">operator = #{dictType.operator},</if>
+            operation_date_time = sysdate()
+        </set>
+        where dict_type_id = #{dictType.dictTypeId}
+    </update>
+
+    <insert id="insertDictType" parameterType="upc.c505.modular.dict.entity.SysDictType">
+        insert into sys_dict_type(
+        <if test="dictType.dictName != null and dictType.dictName != ''">dict_name,</if>
+        <if test="dictType.dictType != null and dictType.dictType != ''">dict_type,</if>
+        <if test="dictType.status != null">status,</if>
+        <if test="dictType.remark != null and dictType.remark != ''">remark,</if>
+        <if test="dictType.creator != null and dictType.creator != ''">creator,</if>
+        add_date_time
+        )values(
+        <if test="dictType.dictName != null and dictType.dictName != ''">#{dictType.dictName},</if>
+        <if test="dictType.dictType != null and dictType.dictType != ''">#{dictType.dictType},</if>
+        <if test="dictType.status != null">#{dictType.status},</if>
+        <if test="dictType.remark != null and dictType.remark != ''">#{dictType.remark},</if>
+        <if test="dictType.creator != null and dictType.creator != ''">#{dictType.creator},</if>
+        sysdate()
+        )
+    </insert>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.village.mapper.VillageConstructionUnitMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.village.entity.VillageConstructionUnit">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="town_street" property="townStreet" />
+        <result column="registrant_name" property="registrantName" />
+        <result column="registrant_time" property="registrantTime" />
+        <result column="unit_name" property="unitName" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="legal_representative" property="legalRepresentative" />
+        <result column="contact_name" property="contactName" />
+        <result column="contact_phone" property="contactPhone" />
+        <result column="company_phone" property="companyPhone" />
+        <result column="fax" property="fax" />
+        <result column="company_web" property="companyWeb" />
+        <result column="business_place" property="businessPlace" />
+        <result column="company_address" property="companyAddress" />
+        <result column="serve_area" property="serveArea" />
+        <result column="business_scope" property="businessScope" />
+        <result column="certificate_name" property="certificateName" />
+        <result column="validity_time_start" property="validityTimeStart" />
+        <result column="validity_time_end" property="validityTimeEnd" />
+        <result column="upload_name" property="uploadName" />
+        <result column="upload_datetime" property="uploadDatetime" />
+        <result column="license_picture" property="licensePicture" />
+        <result column="industry_attributes" property="industryAttributes" />
+        <result column="area_id" property="areaId" />
+        <result column="status" property="status" />
+    </resultMap>
+
+</mapper>

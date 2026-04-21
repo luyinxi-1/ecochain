@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.employeetrain.mapper.TrainCourseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.employeetrain.entity.TrainCourse">
+        <id column="id" property="id" />
+        <result column="course_type" property="courseType" />
+        <result column="course_title" property="courseTitle" />
+        <result column="course_time_length" property="courseTimeLength" />
+        <result column="industry_type" property="industryType" />
+        <result column="work_type" property="workType" />
+        <result column="course_photo" property="coursePhoto" />
+        <result column="course_status" property="courseStatus" />
+        <result column="operate_time" property="operateTime" />
+        <result column="operate_person" property="operatePerson" />
+        <result column="operate_ip" property="operateIp" />
+        <result column="unified_code" property="unifiedCode" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <insert id="insertCourse">
+        insert into train_course
+        (course_type,course_title,course_time_length,industry_type,work_type,course_photo,course_status)
+        values
+            (#{courseType},#{courseTitle},#{courseTimeLength},#{industryType},#{workType},#{coursePhoto},#{courseStatus})
+    </insert>
+
+</mapper>

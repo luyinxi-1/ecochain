@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.prosperity.mapper.ProsperityInterconnectionMarketStarMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.prosperity.entity.ProsperityInterconnectionMarketStar">
+        <id column="id" property="id" />
+        <result column="people_resident_id" property="peopleResidentId" />
+        <result column="publish_title" property="publishTitle" />
+        <result column="publish_content" property="publishContent" />
+        <result column="publish_attribute" property="publishAttribute" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+</mapper>

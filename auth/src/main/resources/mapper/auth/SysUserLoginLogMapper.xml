@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.auth.mapper.NewSysUserLoginLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.auth.entity.SysUserLoginLog">
+        <id column="id" property="id" />
+        <result column="user_code" property="userCode" />
+        <result column="username" property="username" />
+        <result column="login_ip" property="loginIp" />
+        <result column="browser" property="browser" />
+        <result column="os_version" property="osVersion" />
+        <result column="status" property="status" />
+        <result column="operational_information" property="operationalInformation" />
+        <result column="login_datetime" property="loginDatetime" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+    </resultMap>
+
+</mapper>

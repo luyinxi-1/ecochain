@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainWorkLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainWorkLog">
+        <id column="id" property="id" />
+        <result column="eco_chain_build_warehouse_id" property="ecoChainBuildWarehouseId" />
+        <result column="eco_chain_process_tracking_id" property="ecoChainProcessTrackingId" />
+        <result column="eco_chain_complete_record_id" property="ecoChainCompleteRecordId" />
+        <result column="evaluator" property="evaluator" />
+        <result column="evaluation_date" property="evaluationDate" />
+        <result column="evaluate_results" property="evaluateResults" />
+        <result column="remarks" property="remarks" />
+        <result column="str1" property="str1" />
+    </resultMap>
+    <select id="getDetailsByProcessId"
+            resultType="upc.c505.modular.ecochain.controller.param.EcoChainWorkLogGetByIdReturnParam"
+            parameterType="java.lang.Long">
+        SELECT
+            t.recorder,
+            t.recording_time AS recordingTime,
+            t.location,
+            t.process_name AS processName,
+            t.eco_chain_process_node_configuration_id AS ecoChainProcessNodeConfigurationId,
+            t.process_pictures AS pictures,
+            w.evaluator,
+            w.evaluate_results AS evaluateResults,
+            w.evaluation_date AS evaluationDate,
+            t.record_describe AS recordDescribe
+        FROM eco_chain_process_tracking t
+            LEFT JOIN eco_chain_work_log w ON t.id = w.eco_chain_process_tracking_id
+        WHERE t.id = #{id}
+    </select>
+
+    <select id="getDetailsByCompleteId"
+            resultType="upc.c505.modular.ecochain.controller.param.EcoChainWorkLogGetByIdReturnParam"
+            parameterType="java.lang.Long">
+        SELECT
+            t.recorder,
+            t.recording_time AS recordingTime,
+            t.location,
+            t.complete_record AS processName,
+            NULL AS ecoChainProcessNodeConfigurationId,
+            t.pictures,
+            w.evaluator,
+            w.evaluate_results AS evaluateResults,
+            w.evaluation_date AS evaluationDate,
+            t.record_describe AS recordDescribe
+        FROM eco_chain_complete_record t
+            LEFT JOIN eco_chain_work_log w ON t.id = w.eco_chain_complete_record_id
+        WHERE t.id = #{id}
+    </select>
+
+
+    <select id="selectWorkLog" resultType="upc.c505.modular.ecochain.controller.param.EcoChainWorkLogParam.SelectWorkLogReturnParam">
+        SELECT
+        bw.industry_group_option,
+        bw.detail_type_option,
+        bw.enterprise_name,
+        bw.status,
+        bw.industry_warehouse,
+        bw.id AS warehouseId,
+        <choose>
+            <when test="searchParam.type == '1'">
+                cr.recording_time,
+                cr.recorder,
+                cr.id AS id
+            </when>
+            <when test="searchParam.type == '0'">
+                pt.process_name,
+                pt.record_describe,
+                pt.eco_chain_process_node_configuration_id AS ecoChainProcessNodeConfigurationId,
+                pt.id AS id
+            </when>
+            <otherwise>
+                cr.recording_time,
+                cr.recorder,
+                cr.id AS id
+            </otherwise>
+        </choose>
+        FROM eco_chain_build_warehouse bw
+        LEFT JOIN eco_chain_complete_record cr ON cr.eco_chain_build_warehouse_id = bw.id
+        LEFT JOIN eco_chain_process_tracking pt ON pt.eco_chain_build_warehouse_id = bw.id
+        <where>
+            1=1
+            AND bw.social_credit_code = #{searchParam.socialCreditCode}
+            <if test="searchParam.warehouseId != null and searchParam.warehouseId != ''">
+                AND bw.id = #{searchParam.warehouseId}
+            </if>
+            <if test="searchParam.type == '1'">
+                <if test="searchParam.recorder != null and searchParam.recorder != ''">
+                    AND cr.recorder LIKE CONCAT('%', #{searchParam.recorder}, '%')
+                </if>
+                <if test="searchParam.recordingTimeStart != null and searchParam.recordingTimeStart != ''">
+                    AND cr.recording_time &gt;= #{searchParam.recordingTimeStart}
+                </if>
+                <if test="searchParam.recordingTimeEnd != null and searchParam.recordingTimeEnd != ''">
+                    AND cr.recording_time &lt;= #{searchParam.recordingTimeEnd}
+                </if>
+            </if>
+            <if test="searchParam.enterpriseName != null and searchParam.enterpriseName != ''">
+                AND bw.enterprise_name = #{searchParam.enterpriseName}
+            </if>
+            <if test="searchParam.detailTypeOption != null and searchParam.detailTypeOption.size() > 0">
+                AND
+                <trim prefix="(" suffix=")" prefixOverrides="OR">
+                    <foreach collection="searchParam.detailTypeOption" item="item">
+                        OR bw.detail_type_option LIKE CONCAT('%', #{item}, '%')
+                    </foreach>
+                </trim>
+            </if>
+            <if test="searchParam.industryGroupOption != null and searchParam.industryGroupOption != ''">
+                AND bw.industry_group_option = #{searchParam.industryGroupOption}
+            </if>
+            <if test="searchParam.industryWarehouse != null and searchParam.industryWarehouse != ''">
+                AND bw.industry_warehouse = #{searchParam.industryWarehouse}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCompleteWorkLog" resultType="upc.c505.modular.ecochain.controller.param.EcoChainWorkLogParam.SelectWorkLogReturnParam">
+        SELECT
+        bw.industry_group_option,
+        bw.detail_type_option,
+        bw.enterprise_name,
+        bw.status,
+        bw.industry_warehouse,
+        bw.id AS warehouseId,
+        cr.recording_time,
+        cr.recorder,
+        cr.complete_record as processName,
+        cr.record_describe as recordDescribe,
+        cr.id AS id
+        FROM eco_chain_build_warehouse bw
+        LEFT JOIN eco_chain_complete_record cr ON cr.eco_chain_build_warehouse_id = bw.id
+        <where>
+            1=1
+            AND bw.social_credit_code = #{searchParam.socialCreditCode}
+            <if test="searchParam.warehouseId != null and searchParam.warehouseId != ''">
+                AND bw.id = #{searchParam.warehouseId}
+            </if>
+            <if test="searchParam.recorder != null and searchParam.recorder != ''">
+                AND cr.recorder LIKE CONCAT('%', #{searchParam.recorder}, '%')
+            </if>
+            <if test="searchParam.recordingTimeStart != null and searchParam.recordingTimeStart != ''">
+                AND cr.recording_time >= #{searchParam.recordingTimeStart}
+            </if>
+            <if test="searchParam.recordingTimeEnd != null and searchParam.recordingTimeEnd != ''">
+                AND cr.recording_time &lt;= #{searchParam.recordingTimeEnd}
+            </if>
+            <if test="searchParam.enterpriseName != null and searchParam.enterpriseName != ''">
+                AND bw.enterprise_name = #{searchParam.enterpriseName}
+            </if>
+            <if test="searchParam.detailTypeOption != null and searchParam.detailTypeOption.size() > 0">
+                AND
+                <trim prefix="(" suffix=")" prefixOverrides="OR">
+                    <foreach collection="searchParam.detailTypeOption" item="item">
+                        OR bw.detail_type_option LIKE CONCAT('%', #{item}, '%')
+                    </foreach>
+                </trim>
+            </if>
+            <if test="searchParam.industryGroupOption != null and searchParam.industryGroupOption != ''">
+                AND bw.industry_group_option = #{searchParam.industryGroupOption}
+            </if>
+            <if test="searchParam.industryWarehouse != null and searchParam.industryWarehouse != ''">
+                AND bw.industry_warehouse = #{searchParam.industryWarehouse}
+            </if>
+            <if test="searchParam.status != null and searchParam.status != '' and searchParam.status != '-1'">
+                AND bw.status = #{searchParam.status}
+            </if>
+        </where>
+        ORDER BY cr.recording_time DESC
+    </select>
+
+    <select id="selectProcessWorkLog" resultType="upc.c505.modular.ecochain.controller.param.EcoChainWorkLogParam.SelectWorkLogReturnParam">
+        SELECT
+        bw.industry_group_option,
+        bw.detail_type_option,
+        bw.enterprise_name,
+        bw.status,
+        bw.industry_warehouse,
+        bw.id AS warehouseId,
+        pt.process_name,
+        pt.record_describe,
+        pt.eco_chain_process_node_configuration_id AS ecoChainProcessNodeConfigurationId,
+        pt.recording_time,
+        pt.recorder,
+        pt.id AS id
+        FROM eco_chain_build_warehouse bw
+        LEFT JOIN eco_chain_process_tracking pt ON pt.eco_chain_build_warehouse_id = bw.id
+        <where>
+            1=1
+            AND bw.social_credit_code = #{searchParam.socialCreditCode}
+            <if test="searchParam.warehouseId != null and searchParam.warehouseId != ''">
+                AND bw.id = #{searchParam.warehouseId}
+            </if>
+            <if test="searchParam.recorder != null and searchParam.recorder != ''">
+                AND pt.recorder LIKE CONCAT('%', #{searchParam.recorder}, '%')
+            </if>
+            <if test="searchParam.recordingTimeStart != null and searchParam.recordingTimeStart != ''">
+                AND pt.recording_time >= #{searchParam.recordingTimeStart}
+            </if>
+            <if test="searchParam.recordingTimeEnd != null and searchParam.recordingTimeEnd != ''">
+                AND pt.recording_time &lt;= #{searchParam.recordingTimeEnd}
+            </if>
+            <if test="searchParam.enterpriseName != null and searchParam.enterpriseName != ''">
+                AND bw.enterprise_name = #{searchParam.enterpriseName}
+            </if>
+            <if test="searchParam.detailTypeOption != null and searchParam.detailTypeOption.size() > 0">
+                AND
+                <trim prefix="(" suffix=")" prefixOverrides="OR">
+                    <foreach collection="searchParam.detailTypeOption" item="item">
+                        OR bw.detail_type_option LIKE CONCAT('%', #{item}, '%')
+                    </foreach>
+                </trim>
+            </if>
+            <if test="searchParam.industryGroupOption != null and searchParam.industryGroupOption != ''">
+                AND bw.industry_group_option = #{searchParam.industryGroupOption}
+            </if>
+            <if test="searchParam.industryWarehouse != null and searchParam.industryWarehouse != ''">
+                AND bw.industry_warehouse = #{searchParam.industryWarehouse}
+            </if>
+            <if test="searchParam.status != null and searchParam.status != '' and searchParam.status != '-1'">
+                AND bw.status = #{searchParam.status}
+            </if>
+        </where>
+        ORDER BY pt.recording_time DESC
+    </select>
+
+
+    <select id="exportWorkLog" resultType="upc.c505.modular.ecochain.controller.param.EcoChainWorkLogParam.ExportWorkLogReturnParam">
+        SELECT
+        bw.industry_group_option,
+        bw.industry_warehouse AS industryWarehouse,
+        bw.detail_type_option,
+        bw.enterprise_name,
+        bw.status,
+        cr.recording_time,
+        cr.recorder,
+        pt.process_name,
+        pt.record_describe,
+        cr.location,
+        pt.eco_chain_process_node_configuration_name,
+        wl.evaluator,
+        wl.evaluation_date,
+        wl.evaluate_results,
+        cr.pictures
+        FROM eco_chain_build_warehouse bw
+        LEFT JOIN eco_chain_complete_record cr
+        ON cr.eco_chain_build_warehouse_id = bw.id
+        LEFT JOIN eco_chain_process_tracking pt
+        ON pt.eco_chain_build_warehouse_id = bw.id
+        LEFT JOIN eco_chain_work_log wl
+        ON wl.eco_chain_build_warehouse_id = bw.id
+        AND wl.eco_chain_process_tracking_id = pt.id
+        AND wl.eco_chain_complete_record_id = cr.id
+        <where>
+            <if test="searchParam.socialCreditCode != null and searchParam.socialCreditCode != ''">
+                bw.social_credit_code = #{searchParam.socialCreditCode}
+            </if>
+            <if test="searchParam.recorder != null and searchParam.recorder != ''">
+                AND cr.recorder LIKE CONCAT('%', #{searchParam.recorder}, '%')
+            </if>
+
+            <if test="searchParam.recordingTimeStart != null and searchParam.recordingTimeStart != ''">
+                AND cr.recording_time >= #{searchParam.recordingTimeStart}
+            </if>
+            <if test="searchParam.recordingTimeEnd != null and searchParam.recordingTimeEnd != ''">
+                AND cr.recording_time &lt;= #{searchParam.recordingTimeEnd}
+            </if>
+
+            <if test="searchParam.enterpriseName != null and searchParam.enterpriseName != ''">
+                AND bw.enterprise_name = #{searchParam.enterpriseName}
+            </if>
+
+            <if test="searchParam.detailTypeOption != null and searchParam.detailTypeOption.size() > 0">
+                AND
+                <trim prefix="(" suffix=")" prefixOverrides="OR">
+                    <foreach collection="searchParam.detailTypeOption" item="item">
+                        OR bw.detail_type_option LIKE CONCAT('%', #{item}, '%')
+                    </foreach>
+                </trim>
+            </if>
+
+            <if test="searchParam.industryGroupOption != null and searchParam.industryGroupOption != ''">
+                AND bw.industry_group_option = #{searchParam.industryGroupOption}
+            </if>
+        </where>
+    </select>
+
+    <select id="exportWorkLogCompleteRecord" resultType="upc.c505.modular.ecochain.controller.param.EcoChainWorkLogParam.ExportWorkLogReturnParam">
+        SELECT
+        bw.industry_group_option,
+        bw.industry_warehouse AS industryWarehouse,
+        bw.detail_type_option,
+        bw.enterprise_name,
+        bw.status,
+        cr.recording_time,
+        cr.recorder,
+        NULL AS process_name,
+        NULL AS record_describe,
+        cr.location,
+        NULL AS eco_chain_process_node_configuration_name,
+        wl.evaluator,
+        wl.evaluation_date,
+        wl.evaluate_results,
+        cr.pictures,
+        cr.complete_record as processName,
+        cr.record_describe as recordDescribe,
+        cr.id AS id
+        FROM eco_chain_build_warehouse bw
+        LEFT JOIN eco_chain_complete_record cr
+        ON cr.eco_chain_build_warehouse_id = bw.id
+        LEFT JOIN eco_chain_work_log wl
+        ON wl.eco_chain_build_warehouse_id = bw.id
+        AND wl.eco_chain_complete_record_id = cr.id
+        <where>
+            <if test="searchParam.socialCreditCode != null and searchParam.socialCreditCode != ''">
+                bw.social_credit_code = #{searchParam.socialCreditCode}
+            </if>
+            <if test="searchParam.recorder != null and searchParam.recorder != ''">
+                AND cr.recorder LIKE CONCAT('%', #{searchParam.recorder}, '%')
+            </if>
+            <if test="searchParam.industryWarehouse != null and searchParam.industryWarehouse != ''">
+                AND bw.industry_warehouse LIKE CONCAT('%', #{searchParam.industryWarehouse}, '%')
+            </if>
+            <if test="searchParam.recordingTimeStart != null and searchParam.recordingTimeStart != ''">
+                AND cr.recording_time &gt;= #{searchParam.recordingTimeStart}
+            </if>
+            <if test="searchParam.recordingTimeEnd != null and searchParam.recordingTimeEnd != ''">
+                AND cr.recording_time &lt;= #{searchParam.recordingTimeEnd}
+            </if>
+            <if test="searchParam.enterpriseName != null and searchParam.enterpriseName != ''">
+                AND bw.enterprise_name = #{searchParam.enterpriseName}
+            </if>
+            <if test="searchParam.detailTypeOption != null and searchParam.detailTypeOption.size() > 0">
+                AND
+                <trim prefix="(" suffix=")" prefixOverrides="OR">
+                    <foreach collection="searchParam.detailTypeOption" item="item">
+                        OR bw.detail_type_option LIKE CONCAT('%', #{item}, '%')
+                    </foreach>
+                </trim>
+            </if>
+            <if test="searchParam.industryGroupOption != null and searchParam.industryGroupOption != ''">
+                AND bw.industry_group_option = #{searchParam.industryGroupOption}
+            </if>
+            <if test="searchParam.status != null and searchParam.status != '' and searchParam.status != '-1'">
+                AND bw.status = #{searchParam.status}
+            </if>
+        </where>
+        ORDER BY cr.recording_time DESC
+    </select>
+
+    <select id="exportWorkLogProcessTracking" resultType="upc.c505.modular.ecochain.controller.param.EcoChainWorkLogParam.ExportWorkLogReturnParam">
+        SELECT
+        bw.industry_group_option,
+        bw.industry_warehouse AS industryWarehouse,
+        bw.detail_type_option,
+        bw.enterprise_name,
+        bw.status,
+        pt.recording_time,
+        pt.recorder,
+        pt.process_name,
+        pt.eco_chain_process_node_configuration_id,
+        pt.record_describe,
+        pt.location,
+        pt.eco_chain_process_node_configuration_name,
+        wl.evaluator,
+        wl.evaluation_date,
+        wl.evaluate_results,
+        pt.process_pictures as pictures,
+        pt.id as id
+        FROM eco_chain_build_warehouse bw
+        LEFT JOIN eco_chain_process_tracking pt
+        ON pt.eco_chain_build_warehouse_id = bw.id
+        LEFT JOIN eco_chain_work_log wl
+        ON wl.eco_chain_build_warehouse_id = bw.id
+        AND wl.eco_chain_process_tracking_id = pt.id
+        <where>
+            <if test="searchParam.socialCreditCode != null and searchParam.socialCreditCode != ''">
+                bw.social_credit_code = #{searchParam.socialCreditCode}
+            </if>
+            <if test="searchParam.recorder != null and searchParam.recorder != ''">
+                AND pt.recorder LIKE CONCAT('%', #{searchParam.recorder}, '%')
+            </if>
+            <if test="searchParam.industryWarehouse != null and searchParam.industryWarehouse != ''">
+                AND bw.industry_warehouse LIKE CONCAT('%', #{searchParam.industryWarehouse}, '%')
+            </if>
+            <if test="searchParam.recordingTimeStart != null and searchParam.recordingTimeStart != ''">
+                AND pt.recording_time >= #{searchParam.recordingTimeStart}
+            </if>
+            <if test="searchParam.recordingTimeEnd != null and searchParam.recordingTimeEnd != ''">
+                AND pt.recording_time &lt;= #{searchParam.recordingTimeEnd}
+            </if>
+            <if test="searchParam.enterpriseName != null and searchParam.enterpriseName != ''">
+                AND bw.enterprise_name = #{searchParam.enterpriseName}
+            </if>
+            <if test="searchParam.detailTypeOption != null and searchParam.detailTypeOption.size() > 0">
+                AND
+                <trim prefix="(" suffix=")" prefixOverrides="OR">
+                    <foreach collection="searchParam.detailTypeOption" item="item">
+                        OR bw.detail_type_option LIKE CONCAT('%', #{item}, '%')
+                    </foreach>
+                </trim>
+            </if>
+            <if test="searchParam.industryGroupOption != null and searchParam.industryGroupOption != ''">
+                AND bw.industry_group_option = #{searchParam.industryGroupOption}
+            </if>
+            <if test="searchParam.status != null and searchParam.status != '' and searchParam.status != '-1'">
+                AND bw.status = #{searchParam.status}
+            </if>
+        </where>
+        ORDER BY pt.recording_time DESC
+    </select>
+
+
+</mapper>

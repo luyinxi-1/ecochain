@@ -1,0 +1,25 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="upc.c505.modular.forum.mapper.ForumReportMapper">
+
+    <!-- 实体类与数据库字段映射结果集 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.forum.entity.ForumReport">
+        <id column="id" property="id" />
+        <result column="report_id" property="reportId" />
+        <result column="report_person" property="reportPerson" />
+        <result column="reported_person" property="reportedPerson" />
+        <result column="report_content" property="reportContent" />
+        <result column="report_url" property="reportUrl"
+                typeHandler="upc.c505.modular.forum.util.JsonSafeTypeHandler" />
+        <result column="reported_content" property="reportedContent" />
+        <result column="reported_url" property="reportedUrl"
+                typeHandler="upc.c505.modular.forum.util.JsonSafeTypeHandler" />
+        <result column="status" property="status" />
+        <result column="creator" property="creator" />
+        <result column="add_time" property="addTime" />
+        <result column="operator" property="operator" />
+        <result column="operate_time" property="operateTime" />
+    </resultMap>
+
+</mapper>

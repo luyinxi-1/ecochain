@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.partybuilding.mapper.PartyBuildingProbationaryPartyMemberInformationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.partybuilding.entity.PartyBuildingProbationaryPartyMemberInformation">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="affiliated_party_organization" property="affiliatedPartyOrganization" />
+        <result column="name" property="name" />
+        <result column="sex" property="sex" />
+        <result column="age" property="age" />
+        <result column="id_number" property="idNumber" />
+        <result column="date_birth" property="dateBirth" />
+        <result column="education" property="education" />
+        <result column="nation" property="nation" />
+        <result column="work_unit" property="workUnit" />
+        <result column="current_address" property="currentAddress" />
+        <result column="notes" property="notes" />
+        <result column="brief_introduction" property="briefIntroduction" />
+        <result column="photo" property="photo" />
+        <result column="date_selection" property="dateSelection" />
+        <result column="date_planned_probation" property="datePlannedProbation" />
+        <result column="phone" property="phone" />
+        <result column="age_structure" property="ageStructure" />
+        <result column="town_street" property="townStreet" />
+    </resultMap>
+
+</mapper>

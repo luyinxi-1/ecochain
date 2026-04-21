@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainPromotionalVideoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainPromotionalVideo">
+        <id column="id" property="id" />
+        <result column="sort" property="sort" />
+        <result column="title" property="title" />
+        <result column="introduction" property="introduction" />
+        <result column="video_address" property="videoAddress" />
+        <result column="video_name" property="videoName" />
+        <result column="video_cover" property="videoCover" />
+        <result column="is_public_account_article" property="isPublicAccountArticle" />
+        <result column="public_account_article_url" property="publicAccountArticleUrl" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="is_publish" property="isPublish" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+</mapper>

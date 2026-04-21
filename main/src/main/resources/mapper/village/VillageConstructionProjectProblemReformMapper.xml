@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.village.mapper.VillageConstructionProjectProblemReformMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.village.entity.VillageConstructionProjectProblemReform">
+        <id column="id" property="id" />
+        <result column="problem_id" property="problemId" />
+        <result column="reform_datetime" property="reformDatetime" />
+        <result column="reform_reply" property="reformReply" />
+        <result column="reform_photo" property="reformPhoto" />
+        <result column="reply" property="reply" />
+        <result column="urgent_level" property="urgentLevel" />
+        <result column="annex" property="annex" />
+        <result column="recheck_result" property="recheckResult" />
+        <result column="recheck_result_detail" property="recheckResultDetail" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="area_id" property="areaId" />
+    </resultMap>
+
+</mapper>

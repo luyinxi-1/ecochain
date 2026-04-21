@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.supenterprise.mapper.SupEnterpriseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.supenterprise.entity.SupEnterprise">
+        <id column="id" property="id"/>
+        <result column="creator" property="creator"/>
+        <result column="add_datetime" property="addDatetime"/>
+        <result column="operator" property="operator"/>
+        <result column="sup_enterprise_name" property="supEnterpriseName"/>
+        <result column="entity_type" property="entityType"/>
+        <result column="industry_category" property="industryCategory"/>
+        <result column="industry_code" property="industryCode"/>
+        <result column="existing_state" property="existingState"/>
+        <result column="registrant_name" property="registrantName"/>
+        <result column="unit_name" property="unitName"/>
+        <result column="social_credit_code" property="socialCreditCode"/>
+        <result column="legal_representative" property="legalRepresentative"/>
+        <result column="legal_phone" property="legalPhone"/>
+        <result column="identity_number" property="identityNumber"/>
+        <result column="contact_name" property="contactName"/>
+        <result column="contact_phone" property="contactPhone"/>
+        <result column="company_phone" property="companyPhone"/>
+        <result column="registrant_time" property="registrantTime"/>
+        <result column="establishment_date" property="establishmentDate"/>
+        <result column="checker_id" property="checkerId"/>
+        <result column="checker_type" property="checkerType"/>
+        <result column="checker_name" property="checkerName"/>
+        <result column="check_date" property="checkDate"/>
+        <result column="aor_type_id" property="aorTypeId"/>
+        <result column="aor_type_name" property="aorTypeName"/>
+        <result column="aor_notes" property="aorNotes"/>
+        <result column="aor_url" property="aorUrl"/>
+        <result column="cancel_date" property="cancelDate"/>
+        <result column="revoke_date" property="revokeDate"/>
+        <result column="revoke_basis" property="revokeBasis"/>
+        <result column="enterprise_type" property="enterpriseType"/>
+        <result column="township" property="township"/>
+        <result column="business_place" property="businessPlace"/>
+        <result column="business_scope" property="businessScope"/>
+        <result column="service_status" property="serviceStatus"/>
+        <result column="community" property="community"/>
+        <result column="grid" property="grid"/>
+        <result column="obterm_start_date" property="obtermStartDate"/>
+        <result column="obterm_end_date" property="obtermEndDate"/>
+        <result column="registration_authority" property="registrationAuthority"/>
+        <result column="employees_number" property="employeesNumber"/>
+        <result column="registered_capital" property="registeredCapital"/>
+        <result column="pay_capital" property="payCapital"/>
+        <result column="investors_number" property="investorsNumber"/>
+        <result column="ninesmall_type" property="ninesmallType"/>
+        <result column="agriculture_entity_type" property="agricultureEntityType"/>
+        <result column="country" property="country"/>
+        <result column="area_id" property="areaId"/>
+        <result column="area_name" property="areaName"/>
+        <result column="gps_flag" property="gpsFlag"/>
+        <result column="de_longitude" property="deLongitude"/>
+        <result column="de_latitude" property="deLatitude"/>
+        <result column="man_longitude" property="manLongitude"/>
+        <result column="man_latitude" property="manLatitude"/>
+    </resultMap>
+    <update id="updateError">
+        UPDATE sup_enterprise
+        SET existing_state = #{aorParam.existingState},
+            aor_type_id = CASE
+                WHEN #{aorParam.existingState} = 3 THEN #{aorParam.aorTypeId}
+                ELSE 0
+                END,
+            aor_type_name = CASE
+                WHEN #{aorParam.existingState} = 3 THEN #{aorParam.aorTypeName}
+                ELSE NULL
+                END,
+            aor_notes = CASE
+                WHEN #{aorParam.existingState} = 3 THEN #{aorParam.aorNotes}
+                ELSE NULL
+                END,
+            aor_url = CASE
+                WHEN #{aorParam.existingState} = 3 THEN #{aorParam.aorUrl}
+                ELSE NULL
+                END,
+            revoke_date = CASE
+                WHEN #{aorParam.existingState} = 4 THEN #{aorParam.revokeDate}
+                ELSE NULL
+                END,
+            revoke_basis = CASE
+                WHEN #{aorParam.existingState} = 4 THEN #{aorParam.revokeBasis}
+                ELSE NULL
+                END,
+            cancel_date = CASE
+                WHEN #{aorParam.existingState} = 5 THEN #{aorParam.cancelDate}
+                ELSE NULL
+                END
+        WHERE social_credit_code = #{aorParam.socialCreditCode}
+    </update>
+</mapper>

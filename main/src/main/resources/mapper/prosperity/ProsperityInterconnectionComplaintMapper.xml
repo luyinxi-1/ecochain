@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.prosperity.mapper.ProsperityInterconnectionComplaintMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.prosperity.entity.ProsperityInterconnectionComplaint">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="market_id" property="marketId" />
+        <result column="complaint_user_code" property="complaintUserCode" />
+        <result column="complaint_name" property="complaintName" />
+        <result column="complaint_certification_phone" property="complaintCertificationPhone" />
+        <result column="complaint_content_phone" property="complaintContentPhone" />
+        <result column="complaint_area" property="complaintArea" />
+        <result column="complaint_reason_demand" property="complaintReasonDemand" />
+        <result column="complaint_picture" property="complaintPicture" />
+        <result column="handle_name" property="handleName" />
+        <result column="handle_time" property="handleTime" />
+        <result column="complaint_status" property="complaintStatus" />
+        <result column="handle_type" property="handleType" />
+        <result column="notes" property="notes" />
+        <result column="area_id" property="areaId" />
+    </resultMap>
+    <select id="selectComplaint"
+            resultType="upc.c505.modular.prosperity.controller.param.ProsperitySelectComplaintPageParam">
+        select *
+        from prosperity_interconnection_complaint a
+        inner join prosperity_interconnection_market b
+        on a.market_id = b.id
+        where 1=1
+        <if test="name != null and name !=''">
+            and b.publish_title like CONCAT('%',#{name},'%')
+        </if>
+        <if test="userAreaList != null and userAreaList !=''">
+            and a.area_id in
+            <foreach collection="userAreaList" item="areaId1" separator="," open="(" close=")">
+                #{areaId1}
+            </foreach>
+        </if>
+        <if test="userCode != null and userCode !=''">
+            AND a.complaint_user_code like CONCAT('%',#{userCode},'%')
+        </if>
+        <if test="handleType != null and handleType > 0">
+            AND a.handle_type = #{handleType}
+        </if>
+        <if test="creator != null and creator !=''">
+            AND a.creator = #{creator}
+        </if>
+        <if test="areaId != null">
+            AND a.area_id = #{areaId}
+        </if>
+        order by a.add_datetime desc
+    </select>
+    <select id="selectSpecifyComplaint"
+            resultType="upc.c505.modular.prosperity.controller.param.ProsperitySelectComplaintPageParam">
+        select *
+        from prosperity_interconnection_complaint a
+        inner join prosperity_interconnection_market b
+        on a.market_id = b.id
+        where a.id = #{id}
+    </select>
+    <select id="selectOnlyComplaint"
+            resultType="upc.c505.modular.prosperity.entity.ProsperityInterconnectionComplaint">
+        select *
+        from prosperity_interconnection_complaint a
+        where a.market_id
+        in (
+            select b.id
+            from prosperity_interconnection_market b
+            where b.publish_title  like CONCAT('%',#{name},'%')
+                  )
+    </select>
+    <select id="selectComplaintList"
+            resultType="upc.c505.modular.prosperity.controller.param.ProsperitySelectComplaintPageParam">
+        select *
+        from prosperity_interconnection_complaint a
+                 inner join prosperity_interconnection_market b
+                            on a.market_id = b.id
+        where b.publish_title like CONCAT('%',#{name},'%')
+    </select>
+</mapper>

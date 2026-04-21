@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.maintain.mapper.MaintainRiskRepairMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.maintain.entity.MaintainRiskRepair">
+        <id column="maintain_risk_repair_id" property="maintainRiskRepairId" />
+        <result column="repair_status" property="repairStatus" />
+        <result column="repair_source" property="repairSource" />
+        <result column="repair_datetime" property="repairDatetime" />
+        <result column="repair_person_id" property="repairPersonId" />
+        <result column="repair_person" property="repairPerson" />
+        <result column="local_village_dept_id" property="localVillageDeptId" />
+        <result column="local_village" property="localVillage" />
+        <result column="repair_location_latitude_and_longitude" property="repairLocationLatitudeAndLongitude" />
+        <result column="repair_location" property="repairLocation" />
+        <result column="repair_description" property="repairDescription" />
+        <result column="repair_photo" property="repairPhoto" />
+        <result column="village_reception_time" property="villageReceptionTime" />
+        <result column="village_reception_person" property="villageReceptionPerson" />
+        <result column="reply_result" property="replyResult" />
+        <result column="repair_management_company" property="repairManagementCompany" />
+        <result column="maintain_infrastructure_id" property="maintainInfrastructureId" />
+        <result column="maintain_infrastructure_name" property="maintainInfrastructureName" />
+        <result column="management_time" property="managementTime" />
+        <result column="management_person" property="managementPerson" />
+        <result column="management_company" property="managementCompany" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="management_location_latitude_and_longitude" property="managementLocationLatitudeAndLongitude" />
+        <result column="management_location" property="managementLocation" />
+        <result column="item_name" property="itemName" />
+        <result column="process_result" property="processResult" />
+        <result column="problem_type" property="problemType" />
+        <result column="item_reason" property="itemReason" />
+        <result column="process_description" property="processDescription" />
+        <result column="process_photo" property="processPhoto" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+</mapper>

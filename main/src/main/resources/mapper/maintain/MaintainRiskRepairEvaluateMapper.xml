@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.maintain.mapper.MaintainRiskRepairEvaluateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.maintain.entity.MaintainRiskRepairEvaluate">
+        <id column="id" property="id" />
+        <result column="maintain_risk_repair_id" property="maintainRiskRepairId" />
+        <result column="appraiser" property="appraiser" />
+        <result column="village" property="village" />
+        <result column="evaluation_datetime" property="evaluationDatetime" />
+        <result column="evaluation_result" property="evaluationResult" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+    </resultMap>
+    <select id="countEvaluateByResult"
+            resultType="upc.c505.modular.maintain.controller.param.MaintainRiskRepairEvaluateCountReturnParam">
+        SELECT
+            mrre.evaluation_result AS resultType,
+            count(*) AS resultNumber
+        FROM
+            `maintain_risk_repair_evaluate` AS mrre
+        WHERE
+        YEAR(mrre.evaluation_datetime) = YEAR(CURDATE())
+        <if test="repairIdList != null and repairIdList.size() > 0">
+            AND
+            mrre.maintain_risk_repair_id IN
+            <foreach collection="repairIdList" separator="," open="(" close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="judgeAreaIdList != null and judgeAreaIdList !=''">
+            AND mrre.area_id in
+            <foreach collection="judgeAreaIdList" item="areaId1" separator="," open="(" close=")">
+                #{areaId1}
+            </foreach>
+        </if>
+        <if test="judgeAreaId != null">
+            AND mrre.area_id = #{judgeAreaId}
+        </if>
+        GROUP BY
+            mrre.evaluation_result
+    </select>
+
+</mapper>

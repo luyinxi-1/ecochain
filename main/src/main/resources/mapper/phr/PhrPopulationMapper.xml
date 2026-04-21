@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.phr.mapper.PhrPopulationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.phr.entity.PhrPopulation">
+        <id column="id" property="id" />
+        <result column="person_name" property="personName" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="sex" property="sex" />
+        <result column="identity_number" property="identityNumber" />
+        <result column="contact_phone" property="contactPhone" />
+        <result column="village_id" property="villageId" />
+        <result column="village_duty_person_id" property="villageDutyPersonId" />
+        <result column="village_duty_person" property="villageDutyPerson" />
+        <result column="household_location" property="householdLocation" />
+<!--        <result column="household_property" property="householdProperty" />-->
+        <result column="birth_date" property="birthDate" />
+        <result column="ethnicity" property="ethnicity" />
+        <result column="current_address" property="currentAddress" />
+        <result column="education_level" property="educationLevel" />
+        <result column="political_status" property="politicalStatus" />
+        <result column="marital_status" property="maritalStatus" />
+        <result column="current_workplace" property="currentWorkplace" />
+        <result column="identity_date_start" property="identityDateStart" />
+        <result column="identity_date_end" property="identityDateEnd" />
+        <result column="issuing_organization" property="issuingOrganization" />
+        <result column="population_composition" property="populationComposition" />
+        <result column="resident_status" property="residentStatus" />
+        <result column="registration_id" property="registrationId" />
+        <result column="registration_name" property="registrationName" />
+        <result column="house_relationship" property="houseRelationship" />
+        <result column="registration_property" property="registrationProperty" />
+        <result column="is_priority" property="isPriority" />
+        <result column="priority_person_type" property="priorityPersonType" />
+        <result column="priority_registe_date" property="priorityRegisteDate" />
+        <result column="priority_duty_person" property="priorityDutyPerson" />
+        <result column="priority_duty_contact" property="priorityDutyContact" />
+        <result column="priority_emergency_contact" property="priorityEmergencyContact" />
+        <result column="remark" property="remark" />
+        <result column="file" property="file" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <update id="updatePopulationCompositionBatch">
+        <foreach collection="list" separator=";" item="item">
+            UPDATE phr_population
+            SET population_composition = #{item.populationComposition}
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+    <update id="updateRegistrationNameBatch">
+        <foreach collection="list" separator=";" item="item">
+            UPDATE phr_population
+            SET registration_name = #{item.registrationName}
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+    
+    <select id="countPopulationCompositionByType"
+            resultType="upc.c505.modular.phr.controller.param.PopulationCompositionCountReturnParam">
+        select
+            (select count(*)
+             from phr_population
+             where population_composition = 1) as InfantsAndToddlers,
+            (select count(*)
+             from phr_population
+             where population_composition = 2) as PreschoolChildren,
+            (select count(*)
+             from phr_population
+             where population_composition = 3) as SchoolAgeChildren,
+            (select count(*)
+             from phr_population
+             where population_composition = 4) as YoungAdults,
+            (select count(*)
+             from phr_population
+             where population_composition = 5) as Adults,
+            (select count(*)
+             from phr_population
+             where population_composition = 6) as MiddleAgedAdults,
+            (select count(*)
+             from phr_population
+             where population_composition = 7) as Elderly6570,
+            (select count(*)
+             from phr_population
+             where population_composition = 8) as Elderly7175,
+            (select count(*)
+             from phr_population
+             where population_composition = 9) as Elderly7680,
+            (select count(*)
+             from phr_population
+             where population_composition = 10) as Elderly80Plus
+    </select>
+
+
+    <select id="countLocalNumberByType"
+            resultType="upc.c505.modular.phr.controller.param.LocalTypeCountReturnParam">
+            select
+             (select count(*)
+             from phr_population
+            where isLocal = 0) as IsNotLocal,
+             (select count(*)
+             from phr_population
+             where isLocal = 1) as IsLocal
+    </select>
+
+    <select id="countResidentNumberByType"
+            resultType="upc.c505.modular.phr.controller.param.ResidentTypeCountReturnParam">
+            select
+             (select count(*)
+             from phr_population
+             where isResident = 0) as IsResident,
+            (select count(*)
+             from phr_population
+             where isResident = 1) as IsNotResident
+    </select>
+    <select id="selectRegistrationList"
+            resultType="upc.c505.modular.phr.entity.PhrPopulationVo">
+    select
+        p.id as populationTableId,
+        r.area_name,
+        r.registration_name,
+        p.person_name,
+        p.house_relationship,
+        p.identity_number,
+        p.contact_phone,
+        r.person_number,
+        p.household_location,
+        r.id as registrationId,
+        r.area_id,
+        p.birth_date,
+        p.registration_property,
+        p.sex,
+        r.operation_datetime
+        from phr_population p
+            inner join phr_registration r on p.registration_name = r.registration_name
+        <where>
+            <if test="param.registrationName!=null and param.registrationName!=''">
+                p.registration_name LIKE CONCAT('%', #{param.registrationName}, '%')
+            </if>
+
+            <if test="param.searchParam!=null and param.searchParam!=''">
+                and (
+                person_name LIKE CONCAT('%', #{param.searchParam}, '%')
+                or contact_phone LIKE CONCAT('%', #{param.searchParam}, '%')
+                or identity_number LIKE CONCAT('%', #{param.searchParam}, '%')
+                )
+            </if>
+
+            <if test="param.householdLocation!=null and param.householdLocation!=''">
+                and p.household_location LIKE CONCAT('%', #{param.householdLocation}, '%')
+            </if>
+
+            <if test="param.villageId!=null and param.villageId!=''">
+                and village_id = #{param.villageId}
+            </if>
+                AND r.area_id IN
+                <foreach collection="areaIdList" item="areaId" separator="," open="(" close=")">
+                    #{areaId}
+                </foreach>
+        </where>
+        order by r.operation_datetime desc
+    </select>
+    <select id="selectRegistrationListForCount" resultType="upc.c505.modular.phr.entity.PhrPopulationVo">
+        select
+        p.id as populationTableId,
+        r.area_name,
+        r.registration_name,
+        p.person_name,
+        p.house_relationship,
+        p.identity_number,
+        p.contact_phone,
+        r.person_number,
+        p.household_location,
+        r.id as registrationId,
+        r.area_id,
+        p.birth_date,
+        p.registration_property,
+        p.sex,
+        r.operation_datetime
+        from phr_population p
+        inner join phr_registration r on p.registration_name = r.registration_name
+        <where>
+             r.area_id IN
+            <foreach collection="areaIdList" item="areaId" separator="," open="(" close=")">
+                #{areaId}
+            </foreach>
+        </where>
+        order by r.operation_datetime desc
+    </select>
+
+</mapper>

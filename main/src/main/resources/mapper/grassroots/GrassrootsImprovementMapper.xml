@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.grassroots.mapper.GrassrootsImprovementMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.grassroots.entity.GrassrootsImprovement">
+        <id column="id" property="id" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="report_person" property="reportPerson" />
+        <result column="report_location" property="reportLocation" />
+        <result column="report_date" property="reportDate" />
+        <result column="event_property" property="eventProperty" />
+        <result column="event_type" property="eventType" />
+        <result column="report_dept_id" property="reportDeptId" />
+        <result column="report_dept_name" property="reportDeptName" />
+        <result column="report_content" property="reportContent" />
+        <result column="report_file" property="reportFile" />
+        <result column="reply_dept_id" property="replyDeptId" />
+        <result column="reply_dept_name" property="replyDeptName" />
+        <result column="reply_person" property="replyPerson" />
+        <result column="reply_date" property="replyDate" />
+        <result column="reply_content" property="replyContent" />
+        <result column="reply_picture" property="replyPicture" />
+        <result column="reply_status" property="replyStatus" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <select id="countImprovementNumberByType"
+            resultType="upc.c505.modular.grassroots.controller.param.ImprovementTypeCountReturnParam">
+        select
+            (select count(*)
+                from grassroots_improvement
+                    <where>
+                        id is not null
+                        and area_id IN
+                        <foreach collection="areaIdList" item="areaId" separator="," open="(" close=")">
+                            #{areaId}
+                        </foreach>
+                    </where>
+                    ) as improvementTotal,
+            (select count(*)
+                from grassroots_improvement
+                    <where>
+                        id is not null
+                        and reply_status = 0
+                        and area_id IN
+                        <foreach collection="areaIdList" item="areaId" separator="," open="(" close=")">
+                            #{areaId}
+                        </foreach>
+                    </where> ) as noReply,
+            (select count(*)
+                from grassroots_improvement
+                    <where>
+                        id is not null
+                        and reply_status = 1
+                        and area_id IN
+                        <foreach collection="areaIdList" item="areaId" separator="," open="(" close=")">
+                            #{areaId}
+                        </foreach>
+                    </where> ) as reply
+    </select>
+
+</mapper>

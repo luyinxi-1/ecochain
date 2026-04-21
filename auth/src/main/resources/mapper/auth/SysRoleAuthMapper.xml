@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.auth.mapper.NewSysRoleAuthMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.auth.entity.SysRoleAuth">
+        <id column="id" property="id" />
+        <result column="role_id" property="roleId" />
+        <result column="auth_id" property="authId" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+    </resultMap>
+    <delete id="myDeleteBatch">
+        delete
+        from sys_role_auth
+        where (role_id, auth_id) in
+        <foreach collection="deleteList" open="(" separator="," close=")" item="item">
+            (#{item.roleId},#{item.authId})
+        </foreach>
+    </delete>
+
+
+</mapper>

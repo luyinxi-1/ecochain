@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.villageiot.mapper.VideoConfigGuobiaoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.villageiot.entity.VideoConfigGuobiao">
+        <id column="id" property="id" />
+        <result column="video_config_common_id" property="videoConfigCommonId" />
+        <result column="device_id" property="deviceId" />
+        <result column="channel_id" property="channelId" />
+        <result column="name" property="name" />
+        <result column="manufacturer" property="manufacturer" />
+        <result column="model" property="model" />
+        <result column="firmware" property="firmware" />
+        <result column="transport" property="transport" />
+        <result column="stream_mode" property="streamMode" />
+        <result column="ip" property="ip" />
+        <result column="port" property="port" />
+        <result column="host_address" property="hostAddress" />
+        <result column="online" property="online" />
+        <result column="register_time" property="registerTime" />
+        <result column="keepalive_time" property="keepaliveTime" />
+        <result column="channel_count" property="channelCount" />
+        <result column="expires" property="expires" />
+        <result column="update_time" property="updateTime" />
+        <result column="media_server_id" property="mediaServerId" />
+        <result column="charset" property="charset" />
+        <result column="subscribe_cycle_for_catalog" property="subscribeCycleForCatalog" />
+        <result column="subscribe_cycle_for_mobile_position" property="subscribeCycleForMobilePosition" />
+        <result column="mobile_position_submission_interval" property="mobilePositionSubmissionInterval" />
+        <result column="subscribe_cycle_for_alarm" property="subscribeCycleForAlarm" />
+        <result column="ssrc_check" property="ssrcCheck" />
+        <result column="geo_coord_sys" property="geoCoordSys" />
+        <result column="tree_type" property="treeType" />
+        <result column="password" property="password" />
+        <result column="latitude" property="latitude" />
+        <result column="longitude" property="longitude" />
+        <result column="sdp_ip" property="sdpIp" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <update id="MultiUpdateOnlineStatus">
+        <foreach collection="list" item="item" separator=";">
+            update video_config_guobiao set online=#{item.online} where device_id=#{item.deviceId} and channel_id=#{item.channelId}
+        </foreach>
+    </update>
+
+</mapper>

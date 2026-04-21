@@ -1,0 +1,103 @@
+server:
+  port: 8290
+#  ssl:
+#    key-store: classpath:cert/tez.scjgws.com.jks
+#    key-store-password: 2as2g72nrx86
+#    key-store-type: JKS
+spring:
+  datasource:
+    #    username: root
+    #    password: Qiaolian@888
+    #    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    url: jdbc:mysql://27.223.88.150:10003/binzhoushi?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&rewriteBatchedStatements=true
+    druid:
+      url: jdbc:mysql://localhost:3306/future_village_water?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&rewriteBatchedStatements=true
+      #      url: jdbc:mysql://localhost:3306/future_village?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&rewriteBatchedStatements=true
+      username: root
+      password: Qiaolian@888
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 2
+      min-idle: 2
+      max-active: 10
+      max-wait: 6000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+  redis:
+    database: 2
+    host: localhost
+    password: qiaolian@888
+    port: 6379
+    timeout: 10000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+  main:
+    banner-mode: off
+    allow-bean-definition-overriding: true
+
+  application:
+    name: village_local
+  cloud:
+    nacos:
+      config:
+        enabled: false
+        refresh-enabled: false
+      #nacos地址
+      server-addr: 127.0.0.1:8848
+      discovery:
+        #  这里不配置地址的话，默认是内网，外部无法访问，打包时这个需要配置成服务器地址
+        #        ip: 27.223.88.150
+        ip: 127.0.0.1
+        username: nacos
+        password: qiaolian@888
+        enabled: false
+        instance-enabled: false
+#    sentinel:
+#      transport:
+#        port: 8719
+#        dashboard: localhost:8790
+
+mybatis-plus:
+  global-config:
+    banner: off
+    db-config:
+      id-type: auto
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+
+feign:
+  httpclient:
+    # 开启 httpclient
+    enabled: false
+    max-connections: 200
+    max-connections-per-route: 50
+    #禁用ssl证书验证
+    disable-ssl-validation: true
+  client:
+    config:
+      default:
+        loggerLevel: BASIC
+  # 是否在feign中开启sentinel熔断
+  sentinel:
+    enabled: false
+
+logging:
+  file:
+    name: ${spring.application.name}.log
+
+
+knife4j:
+  # 开启增强配置
+  enable: true
+  #  开启Swagger的Basic认证功能,默认是false
+  basic:
+    enable: false
+#    # Basic认证用户名
+#    username: root
+#    # Basic认证密码
+#    password: Qiaolian@888

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.village.mapper.VillageConstructionBuilderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.village.entity.VillageConstructionBuilder">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="town_street" property="townStreet" />
+        <result column="registrant_name" property="registrantName" />
+        <result column="registrant_time" property="registrantTime" />
+        <result column="unit_name" property="unitName" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="name" property="name" />
+        <result column="contact_phone" property="contactPhone" />
+        <result column="identity_number" property="identityNumber" />
+        <result column="position_job_type" property="positionJobType" />
+        <result column="ontact_phone_other" property="ontactPhoneOther" />
+        <result column="notes" property="notes" />
+        <result column="job_description" property="jobDescription" />
+        <result column="picture" property="picture" />
+        <result column="id_picture" property="idPicture" />
+        <result column="serve_area" property="serveArea" />
+    </resultMap>
+
+</mapper>

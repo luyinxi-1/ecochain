@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.miniprogram.mapper.MiniProgramBindMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, app_id, app_secret, welcome_message, mini_program_name, mini_program_desc, company_name, credit_code, reserve_field1, reserve_field2, reserve_field3, reserve_field4, reserve_field5, reserve_field6, reserve_field7, reserve_field8, reserve_field9, reserve_field10, reserve_field11, reserve_field12, reserve_field13, reserve_field14, reserve_field15, reserve_field16, reserve_field17, reserve_field18, reserve_field19, reserve_field20
+    </sql>
+
+    <!-- 根据关键词模糊查询 -->
+    <select id="selectByKeyword" resultType="upc.c505.modular.miniprogram.entity.MiniProgramBindEntity">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM mini_program_bind
+        WHERE 1=1
+        <if test="keyword != null and keyword != ''">
+            AND (
+                app_id LIKE CONCAT('%', #{keyword}, '%')
+                OR mini_program_name LIKE CONCAT('%', #{keyword}, '%')
+                OR company_name LIKE CONCAT('%', #{keyword}, '%')
+                OR credit_code LIKE CONCAT('%', #{keyword}, '%')
+            )
+        </if>
+    </select>
+
+</mapper>

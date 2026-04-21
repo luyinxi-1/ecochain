@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.employeetrain.mapper.TrainMaterialMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.employeetrain.entity.TrainMaterial">
+        <id column="id" property="id" />
+        <result column="material_title" property="materialTitle" />
+        <result column="material_sub_title" property="materialSubTitle" />
+        <result column="material_time_length" property="materialTimeLength" />
+        <result column="material_content" property="materialContent" />
+        <result column="material_url" property="materialUrl" />
+        <result column="operate_time" property="operateTime" />
+        <result column="operate_person" property="operatePerson" />
+        <result column="operate_ip" property="operateIp" />
+        <result column="unified_code" property="unifiedCode" />
+        <result column="top" property="top" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+</mapper>

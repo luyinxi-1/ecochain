@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.employeetrain.mapper.EmployeeTrainMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.employeetrain.entity.EmployeeTrain">
+        <id column="id" property="id" />
+        <result column="record_status" property="recordStatus" />
+        <result column="employee_id" property="employeeId" />
+        <result column="employee_id_number" property="employeeIdNumber" />
+        <result column="course_id" property="courseId" />
+        <result column="course_name" property="courseName" />
+        <result column="material_id" property="materialId" />
+        <result column="material_title" property="materialTitle" />
+        <result column="material_sub_title" property="materialSubTitle" />
+        <result column="material_time_length" property="materialTimeLength" />
+        <result column="material_learn_length" property="materialLearnLength" />
+        <result column="latest_learn_date" property="latestLearnDate" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="operate_person" property="operatePerson" />
+        <result column="operate_ip" property="operateIp" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="year" property="year" />
+        <result column="unified_code" property="unifiedCode" />
+    </resultMap>
+    <update id="updateByMaterialDelete">
+        update employee_train
+        set record_status = 0
+        <if test="materialIds != null and materialIds.size() > 0">
+            where material_id in
+            <foreach collection="materialIds" item="materialId" open="(" close=")" separator=",">
+                #{materialId}
+            </foreach>
+        </if>
+
+    </update>
+    <update id="updateByCourseStatus">
+        update employee_train
+        <if test="courseStatus == 0">
+            set record_status = 0
+            where course_id = #{courseId}
+        </if>
+        <if test="courseStatus == 1">
+            set record_status = 1
+            where course_id = #{courseId}
+        </if>
+    </update>
+    <update id="updateByCourseDelete">
+        update employee_train
+        set record_status = 0
+        where course_id in
+        <foreach collection="courseIds" item="courseId" open="(" close=")" separator=",">
+            #{courseId}
+        </foreach>
+    </update>
+    <update id="updateByCourseUpdate">
+        update employee_train
+        set record_status = 0
+        where course_id = #{courseId}
+        <if test="materialIds != null and materialIds.size() > 0">
+            and material_id not in
+            <foreach collection="materialIds" item="materialId" open="(" close=")" separator=",">
+                #{materialId}
+            </foreach>
+        </if>
+    </update>
+    <update id="updateByWorkTypeA">
+        update employee_train
+        set record_status = 0
+        where employee_id_number = #{idNumber}
+        <if test="courseIds != null and courseIds.size() > 0">
+        and course_id not in
+        <foreach collection="courseIds" item="courseId" open="(" close=")" separator=",">
+            #{courseId}
+        </foreach>
+        </if>
+    </update>
+    <update id="updateByWorkTypeB">
+        update employee_train
+        set record_status = 1
+        where employee_id_number = #{idNumber}
+        <if test="courseIds != null and courseIds.size() > 0">
+        and course_id  in
+        <foreach collection="courseIds" item="courseId" open="(" close=")" separator=",">
+            #{courseId}
+        </foreach>
+        </if>
+    </update>
+    <select id="getTrainNewPage"
+            resultType="upc.c505.modular.employeetrain.controller.param.EmployeeTrainParam">
+        select *,required_class_hour as requiredMinutes
+        from people_enterprise
+        left join  (
+        select a.employee_id_number as employee_id_number,sum(a.material_learn_length) as learningMinutes
+        from (
+        select distinct employee_id_number,material_id,material_learn_length
+        from employee_train
+        where operate_time &lt; #{yearEnd} and operate_time &gt; #{yearStart} and record_status = 1
+        ) as a
+        group by a.employee_id_number
+        ) as b on identity_number = b.employee_id_number
+        <trim prefix="where" prefixOverrides="and| or">
+            <if test="searchParam.trainStatus != null ">
+                <if test="searchParam.trainStatus == 0">
+                    (learningMinutes is null or learningMinutes = 0 or learningMinutes = ' ')
+                </if>
+                <if test="searchParam.trainStatus == 1">
+                    learningMinutes &lt; required_class_hour and learningMinutes != 0
+                </if>
+                <if test="searchParam.trainStatus == 2">
+                    learningMinutes &gt;= required_class_hour
+                </if>
+            </if>
+            <if test="searchParam.townList != null and searchParam.townList.size() > 0">
+                and enterprise_area_id in
+                <foreach close=")" collection="searchParam.townList" item="town" open="(" separator=",">
+                    #{town}
+                </foreach>
+            </if>
+            <if test="searchParam.townId != null and searchParam.townId != '' and (searchParam.userType == 2 || searchParam.userType == 3)">
+                and ${searchParam.townId} in
+                <foreach close=")" collection="searchParam.townList" item="town" open="(" separator=",">
+                    #{town}
+                </foreach>
+                and enterprise_area_id = #{searchParam.townId}
+            </if>
+            <if test=" searchParam.townId != null and searchParam.townId != '' and searchParam.userType == -1" > #{searchParam.userType}
+                and enterprise_area_id = #{searchParam.townId}
+            </if>
+            <if test="searchParam.multiParam != null and searchParam.multiParam != ''">
+                and (
+                enterprise_name like concat('%',#{searchParam.multiParam},'%') or
+                people_name like concat('%',#{searchParam.multiParam},'%') or
+                identity_number like concat('%',#{searchParam.multiParam},'%')
+                )
+            </if>
+            <if test="searchParam.creditCode != null and searchParam.creditCode != ''">
+                and social_credit_code = #{searchParam.creditCode}
+            </if>
+            <if test="searchParam.industryType != null and searchParam.industryType != ''">
+                and industry_type_person = #{searchParam.industryType}
+            </if>
+            <if test="searchParam.workType != null and searchParam.workType != ''">
+                and work_type_name = #{searchParam.workType}
+            </if>
+            <!--            <if test="searchParam.trainStatus != null and searchParam.trainStatus != ''">-->
+            <!--                and train_status = #{searchParam.trainStatus}-->
+            <!--            </if>-->
+            <!-- and settle_enterprise_status = 1-->
+        </trim>
+
+    </select>
+    <select id="getTrainLearnTime" resultType="java.lang.Integer">
+        select sum(a.material_learn_length) as totalTime
+        from (
+        select distinct (material_id),material_learn_length
+        from employee_train
+        where employee_id_number = #{idNumber} and operation_datetime &lt; #{yearEnd} and operation_datetime &gt; #{yearStart}
+        <if test="courseIds != null and courseIds.size() > 0">
+            and course_id in
+            <foreach close=")" collection="courseIds" item="courseId" open="(" separator=",">
+                #{courseId}
+            </foreach>
+        </if>
+        ) as a
+    </select>
+    <select id="getCourseLearnTime" resultType="java.lang.Integer">
+        select sum(material_learn_length) as totalCourseTime
+        from employee_train
+        where employee_id_number = #{idNumber} and course_id = #{courseId}
+        <if test="materialIds != null and materialIds.size() > 0">
+            and material_id in
+            <foreach close=")" collection="materialIds" item="materialId" open="(" separator=",">
+                #{materialId}
+            </foreach>
+        </if>
+    </select>
+    <select id="getTrainTime" resultType="upc.c505.modular.employeetrain.controller.param.TrainTime">
+        SELECT
+            employee_id_number as idNumber,
+            SUM( material_learn_length ) as length
+        FROM
+            employee_train
+        WHERE
+            DATE_FORMAT(operate_datetime,'%Y') = #{year}
+        GROUP BY
+            idNumber
+    </select>
+
+</mapper>

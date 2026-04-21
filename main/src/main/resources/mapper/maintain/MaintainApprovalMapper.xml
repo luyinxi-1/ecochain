@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.maintain.mapper.MaintainApprovalMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.maintain.entity.MaintainApproval">
+        <id column="id" property="id" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="report_date" property="reportDate" />
+        <result column="reporter" property="reporter" />
+        <result column="maintain_company" property="maintainCompany" />
+        <result column="maintain_company_credit_code" property="maintainCompanyCreditCode" />
+        <result column="project_number" property="projectNumber" />
+        <result column="project_name" property="projectName" />
+        <result column="damage_situation" property="damageSituation" />
+        <result column="determination_situation" property="determinationSituation" />
+        <result column="maintenance_plan" property="maintenancePlan" />
+        <result column="funds_direction" property="fundsDirection" />
+        <result column="funds_type" property="fundsType" />
+        <result column="budget_quote" property="budgetQuote" />
+        <result column="approval_target" property="approvalTarget" />
+        <result column="accumulation_time_record" property="accumulationTimeRecord" />
+        <result column="maintain_approval_status" property="maintainApprovalStatus" />
+        <result column="approval_status" property="approvalStatus" />
+        <result column="project_start_date" property="projectStartDate" />
+        <result column="construction_duration" property="constructionDuration" />
+        <result column="supervision_company" property="supervisionCompany" />
+        <result column="supervision_company_credit_code" property="supervisionCompanyCreditCode" />
+        <result column="supervision_approver" property="supervisionApprover" />
+        <result column="supervision_approval_time" property="supervisionApprovalTime" />
+        <result column="supervision_approval_result" property="supervisionApprovalResult" />
+        <result column="supervision_approver_signature" property="supervisionApproverSignature" />
+        <result column="first_township_approver" property="firstTownshipApprover" />
+        <result column="first_township_approver_id" property="firstTownshipApproverId" />
+        <result column="first_township_approval_time" property="firstTownshipApprovalTime" />
+        <result column="first_township_approval_result" property="firstTownshipApprovalResult" />
+        <result column="first_township_approval_signature" property="firstTownshipApprovalSignature" />
+        <result column="second_township_approver" property="secondTownshipApprover" />
+        <result column="second_township_approver_id" property="secondTownshipApproverId" />
+        <result column="second_township_approval_time" property="secondTownshipApprovalTime" />
+        <result column="second_township_approval_result" property="secondTownshipApprovalResult" />
+        <result column="second_township_approval_signature" property="secondTownshipApprovalSignature" />
+        <result column="third_township_approver" property="thirdTownshipApprover" />
+        <result column="third_township_approver_id" property="thirdTownshipApproverId" />
+        <result column="third_township_approval_time" property="thirdTownshipApprovalTime" />
+        <result column="third_township_approval_result" property="thirdTownshipApprovalResult" />
+        <result column="third_township_approval_signature" property="thirdTownshipApprovalSignature" />
+        <result column="fourth_township_approver" property="fourthTownshipApprover" />
+        <result column="fourth_township_approver_id" property="fourthTownshipApproverId" />
+        <result column="fourth_township_approval_time" property="fourthTownshipApprovalTime" />
+        <result column="fourth_township_approval_result" property="fourthTownshipApprovalResult" />
+        <result column="fourth_township_approval_signature" property="fourthTownshipApprovalSignature" />
+        <result column="financial_bureau_approver" property="financialBureauApprover" />
+        <result column="financial_bureau_approver_id" property="financialBureauApproverId" />
+        <result column="financial_bureau_approval_time" property="financialBureauApprovalTime" />
+        <result column="financial_bureau_approval_result" property="financialBureauApprovalResult" />
+        <result column="financial_bureau_approval_signature" property="financialBureauApprovalSignature" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+    <select id="selectExistingNameList" resultType="java.lang.String">
+        SELECT
+            funds_direction
+        FROM
+            maintain_approval
+        WHERE
+            funds_direction IS NOT NULL
+          AND funds_direction != ''
+        GROUP BY
+            funds_direction;
+    </select>
+<!--    <select id="selectFundsDirectionCount"-->
+<!--            resultType="upc.c505.modular.maintain.controller.param.FundsDirectionCountReturnParam">-->
+<!--        SELECT-->
+<!--        funds_direction AS fundsDirection,-->
+<!--        COUNT(*) AS counts-->
+<!--        FROM-->
+<!--        maintain_approval-->
+<!--        WHERE-->
+<!--        <foreach item="name" collection="existingNamesList" open="(" separator="," close=")">-->
+<!--            funds_direction LIKE #{name}-->
+<!--        </foreach>-->
+<!--        GROUP BY-->
+<!--        funds_direction;-->
+<!--    </select>-->
+    <select id="selectFundsDirectionCount"
+            resultType="upc.c505.modular.maintain.controller.param.FundsDirectionCountReturnParam">
+        SELECT
+        funds_direction AS fundsDirection,
+        COUNT(*) AS counts
+        FROM
+        maintain_approval
+        GROUP BY
+        funds_direction;
+    </select>
+
+
+
+
+</mapper>

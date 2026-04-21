@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.govservice.mapper.GovServiceConvenientMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.govservice.entity.GovServiceConvenient">
+        <id column="id" property="id" />
+        <result column="service_type_id" property="serviceTypeId" />
+        <result column="service_type" property="serviceType" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="service_title" property="serviceTitle" />
+        <result column="service_title_second" property="serviceTitleSecond" />
+        <result column="service_picture" property="servicePicture" />
+        <result column="service_foundation" property="serviceFoundation" />
+        <result column="service_condition" property="serviceCondition" />
+        <result column="service_application" property="serviceApplication" />
+        <result column="service_address" property="serviceAddress" />
+        <result column="service_process" property="serviceProcess" />
+        <result column="service_price" property="servicePrice" />
+        <result column="service_end_time" property="serviceEndTime" />
+        <result column="release_state" property="releaseState" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+</mapper>

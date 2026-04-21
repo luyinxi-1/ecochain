@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.people.mapper.PeopleGovernmentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.people.entity.PeopleGovernment">
+        <id column="id" property="id" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="dept_id" property="deptId" />
+        <result column="dept_name" property="deptName" />
+        <result column="job_id" property="jobId" />
+        <result column="job_name" property="jobName" />
+        <result column="people_name" property="peopleName" />
+        <result column="identity_number" property="identityNumber" />
+        <result column="sex" property="sex" />
+        <result column="contact_phone" property="contactPhone" />
+        <result column="office_phone" property="officePhone" />
+        <result column="work_phone" property="workPhone" />
+        <result column="seq" property="seq" />
+        <result column="government_type" property="governmentType" />
+        <result column="remark" property="remark" />
+        <result column="introduce" property="introduce" />
+        <result column="picture" property="picture" />
+        <result column="file" property="file" />
+        <result column="status" property="status" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+</mapper>

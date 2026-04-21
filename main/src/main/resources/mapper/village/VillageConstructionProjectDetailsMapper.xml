@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.village.mapper.VillageConstructionProjectDetailsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.village.entity.VillageConstructionProjectDetails">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="area_street" property="areaStreet" />
+        <result column="project_type" property="projectType" />
+        <result column="project_year" property="projectYear" />
+        <result column="project_name" property="projectName" />
+        <result column="project_number" property="projectNumber" />
+        <result column="subcontract_or_not" property="subcontractOrNot" />
+        <result column="subcontract_situation" property="subcontractSituation" />
+        <result column="contract_name" property="contractName" />
+        <result column="contract_number" property="contractNumber" />
+        <result column="contract_amount" property="contractAmount" />
+        <result column="payment_way" property="paymentWay" />
+        <result column="supervision_unit" property="supervisionUnit" />
+        <result column="plan_start_time" property="planStartTime" />
+        <result column="plan_completion_time" property="planCompletionTime" />
+        <result column="project_cycle" property="projectCycle" />
+        <result column="project_info" property="projectInfo" />
+        <result column="project_leader_id" property="projectLeaderId" />
+        <result column="project_leader" property="projectLeader" />
+        <result column="project_leader_phone" property="projectLeaderPhone" />
+        <result column="project_leader_department" property="projectLeaderDepartment" />
+        <result column="project_relate_leader" property="projectRelateLeader" />
+        <result column="construction_credit_code" property="constructionCreditCode" />
+        <result column="construction_name" property="constructionName" />
+        <result column="construction_project_leader" property="constructionProjectLeader" />
+        <result column="construction_project_relate_leader" property="constructionProjectRelateLeader" />
+        <result column="construction_project_leader_phone" property="constructionProjectLeaderPhone" />
+        <result column="construction_project_leader_duty" property="constructionProjectLeaderDuty" />
+        <result column="supervision_name" property="supervisionName" />
+        <result column="supervision_credit_code" property="supervisionCreditCode" />
+        <result column="supervision_project_leader" property="supervisionProjectLeader" />
+        <result column="supervision_project_relate_leader" property="supervisionProjectRelateLeader" />
+        <result column="supervision_project_leader_phone" property="supervisionProjectLeaderPhone" />
+        <result column="supervision_project_leader_duty" property="supervisionProjectLeaderDuty" />
+        <result column="extension" property="extension" />
+        <result column="extensiontime" property="extensiontime" />
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.phr.mapper.PhrRegistrationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.phr.entity.PhrRegistration">
+        <id column="id" property="id" />
+        <result column="registration_name" property="registrationName" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="owner_name" property="ownerName" />
+        <result column="owner_sex" property="ownerSex" />
+        <result column="owner_identity_number" property="ownerIdentityNumber" />
+        <result column="owner_contact_phone" property="ownerContactPhone" />
+        <result column="file" property="file" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <select id="selectRegistrationListForExport"
+            resultType="upc.c505.modular.phr.entity.PhrPopulationVo">
+        select
+        p.sex,
+        p.registration_property,
+        p.area_name,
+        r.registration_name,
+        p.person_name,
+        p.house_relationship,
+        p.identity_number,
+        p.contact_phone,
+        r.person_number,
+        p.household_location,
+        r.id as registrationId,
+        p.area_id
+        from phr_population p
+        inner join phr_registration r on p.registration_name = r.registration_name
+        <where>
+            <if test="param.searchParam!=null and param.searchParam!=''">
+                person_name LIKE CONCAT('%', #{param.searchParam}, '%')
+                or contact_phone LIKE CONCAT('%', #{param.searchParam}, '%')
+                or identity_number LIKE CONCAT('%', #{param.searchParam}, '%')
+            </if>
+
+            <if test="param.registrationName!=null and param.registrationName!=''">
+                and p.registration_name LIKE CONCAT('%', #{param.registrationName}, '%')
+            </if>
+
+            <if test="param.householdLocation!=null and param.householdLocation!=''">
+                and p.household_location LIKE CONCAT('%', #{param.householdLocation}, '%')
+            </if>
+
+            <if test="param.villageId!=null and param.villageId!=''">
+                and village_id = #{param.villageId}
+            </if>
+
+            AND p.area_id IN
+            <foreach collection="areaIdList" item="areaId" separator="," open="(" close=")">
+                #{areaId}
+            </foreach>
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.people.mapper.PeopleCardStatisticsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.people.entity.PeopleCardStatistics">
+        <id column="id" property="id" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="people_id" property="peopleId" />
+        <result column="template_id" property="templateId" />
+        <result column="type" property="type" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <select id="employeeCardRanking" resultType="upc.c505.modular.people.controller.param.EmployeeCardRankingParam"
+            parameterType="java.util.Map">
+        SELECT
+        emp.id,
+        pcs.social_credit_code,
+        pcs.people_id,
+        pcs.template_id,
+        pcs.type,
+        pcs.creator,
+        pcs.add_datetime,
+        pcs.operator,
+        pcs.operation_datetime,
+        emp.people_name
+        FROM
+        people_card_statistics pcs
+        LEFT JOIN
+        people_enterprise emp ON pcs.people_id = emp.id
+        <where>
+            <if test="socialCreditCode != null and socialCreditCode != ''">
+                AND pcs.social_credit_code = #{socialCreditCode}
+            </if>
+            <if test="templateId != null">
+                AND pcs.template_id = #{templateId}
+            </if>
+            <if test="peopleName != null and peopleName != ''">
+                AND emp.people_name LIKE CONCAT('%', #{peopleName}, '%')
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND pcs.add_datetime &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND pcs.add_datetime &lt;= #{endTime}
+            </if>
+            <if test="true">
+                AND (pcs.type = '发名片' OR pcs.type = '名片访问')
+            </if>
+        </where>
+    </select>
+
+
+
+
+</mapper>

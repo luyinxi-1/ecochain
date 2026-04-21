@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.forum.mapper.ForumPostMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.forum.entity.ForumPost">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operate_datetime" property="operateDatetime" />
+        <result column="head_pic" property="headPic" />
+        <result column="release_type" property="releaseType" />
+        <result column="release_content" property="releaseContent" />
+        <result column="release_pic" property="releasePic" typeHandler="upc.c505.modular.forum.util.JsonSafeTypeHandler" />
+        <result column="reply_num" property="replyNum" />
+        <result column="like_num" property="likeNum" />
+        <result column="report_num" property="reportNum" />
+    </resultMap>
+
+</mapper>

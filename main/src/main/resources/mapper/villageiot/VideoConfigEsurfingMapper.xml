@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.villageiot.mapper.VideoConfigEsurfingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.villageiot.entity.VideoConfigEsurfing">
+        <id column="id" property="id" />
+        <result column="video_config_common_id" property="videoConfigCommonId" />
+        <result column="picture" property="picture" />
+        <result column="device_code" property="deviceCode" />
+        <result column="device_name" property="deviceName" />
+        <result column="device_model" property="deviceModel" />
+        <result column="factory_id" property="factoryId" />
+        <result column="device_factory" property="deviceFactory" />
+        <result column="device_type" property="deviceType" />
+        <result column="firmware_version" property="firmwareVersion" />
+        <result column="is_cloud_camera" property="isCloudCamera" />
+        <result column="gb_id" property="gbId" />
+        <result column="latitude" property="latitude" />
+        <result column="longitude" property="longitude" />
+        <result column="online_status" property="onlineStatus" />
+        <result column="cloud_status" property="cloudStatus" />
+        <result column="band_status" property="bandStatus" />
+        <result column="import_time" property="importTime" />
+        <result column="full_region_name" property="fullRegionName" />
+        <result column="region_code" property="regionCode" />
+        <result column="package_info" property="packageInfo" />
+        <result column="ctei" property="ctei" />
+        <result column="is_self_bind" property="isSelfBind" />
+        <result column="proto" property="proto" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <update id="multiUpdateOnlineStatus">
+        <foreach collection="list" item="item" separator=";">
+            update video_config_esurfing set online_status=#{item.onlineStatus} where device_code=#{item.deviceCode}
+        </foreach>
+    </update>
+
+</mapper>

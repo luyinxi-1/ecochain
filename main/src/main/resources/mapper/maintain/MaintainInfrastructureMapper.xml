@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.maintain.mapper.MaintainInfrastructureMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.maintain.entity.MaintainInfrastructure">
+        <id column="id" property="id"/>
+        <result column="area_id" property="areaId"/>
+        <result column="area_name" property="areaName"/>
+        <result column="statistics_date" property="statisticsDate"/>
+        <result column="device_type" property="deviceType"/>
+        <result column="device_type_breakdown" property="deviceTypeBreakdown"/>
+        <result column="title" property="title"/>
+        <result column="specifications_and_models" property="specificationsAndModels"/>
+        <result column="per_unit" property="perUnit"/>
+        <result column="amount" property="amount"/>
+        <result column="management_department" property="managementDepartment"/>
+        <result column="head" property="head"/>
+        <result column="full_address" property="fullAddress"/>
+        <result column="latitude_and_longitude" property="latitudeAndLongitude"/>
+        <result column="contact_number" property="contactNumber"/>
+        <result column="device_status" property="deviceStatus"/>
+        <result column="stewardship_company" property="stewardshipCompany"/>
+        <result column="maintain_company_credit_code" property="maintainCompanyCreditCode"/>
+        <result column="supervision_company" property="supervisionCompany"/>
+        <result column="supervision_company_credit_code" property="supervisionCompanyCreditCode"/>
+        <result column="audit_firm" property="auditFirm"/>
+        <result column="audit_firm_credit_code" property="auditFirmCreditCode"/>
+        <result column="picture" property="picture"/>
+        <result column="creator" property="creator"/>
+        <result column="add_datetime" property="addDatetime"/>
+        <result column="operator" property="operator"/>
+        <result column="operation_datetime" property="operationDatetime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <select id="selectFacilitiesLargeScreenCount"
+            resultType="upc.c505.modular.maintain.controller.param.FacilitiesLargeScreenReturnParam">
+        SELECT
+            device_type_breakdown AS deviceTypeBreakdown,
+            SUM(amount) AS countNumber
+        FROM
+            maintain_Infrastructure
+        where
+        maintain_Infrastructure.deleted = 0
+        <if test="param.superviseCompanySocialCreditCode != null and param.superviseCompanySocialCreditCode !=''">
+            and maintain_Infrastructure.supervision_company_credit_code = #{param.superviseCompanySocialCreditCode}
+        </if>
+        <if test="param.maintainCompanySocialCreditCode != null and param.maintainCompanySocialCreditCode !=''">
+            and maintain_Infrastructure.maintain_company_credit_code = #{param.maintainCompanySocialCreditCode}
+        </if>
+        <if test="param.auditingCompanySocialCreditCode != null and param.auditingCompanySocialCreditCode !=''">
+            and maintain_Infrastructure.audit_firm_credit_code = #{param.auditingCompanySocialCreditCode}
+        </if>
+        and
+        1 = 1
+        <if test="manageAreaIdList != null and manageAreaIdList.size()!=0 ">
+            And maintain_Infrastructure.area_id IN
+            <foreach collection="manageAreaIdList" item="areaId" separator="," open="(" close=")">
+                #{areaId}
+            </foreach>
+        </if>
+        GROUP BY
+            device_type_breakdown
+
+    </select>
+    <select id="getAreaByRolePermission"
+            resultType="upc.c505.modular.maintain.controller.param.DisplayAreaParam">
+        SELECT
+        sys_area.id,
+        sys_area.area_name as name,
+        sys_area.remark,
+        grid_grid.polygon,
+        grid_grid.center,
+        sys_area.area_type as level,
+        grid_grid.color,
+        number
+        FROM
+        sys_area
+        LEFT JOIN grid_grid ON sys_area.id = grid_grid.area_id
+        LEFT JOIN ( SELECT township, COUNT( township ) AS number FROM sup_enterprise GROUP BY township ) AS enterprise ON enterprise.township = sys_area.id
+        WHERE
+            1 = 1
+        <if test="type != -1">
+            and
+            sys_area.id in
+            <foreach collection="list" separator="," open="(" close=")" item="item">
+                ${item}
+            </foreach>
+        </if>
+    </select>
+    <select id="getFacilitiesDeptIdFirst" resultType="java.lang.Long">
+        SELECT management_department AS departmentId
+        FROM maintain_Infrastructure
+        where
+            maintain_Infrastructure.deleted = 0
+        <if test="manageAreaIdList != null and manageAreaIdList.size()!=0 ">
+            And maintain_Infrastructure.area_id IN
+            <foreach collection="manageAreaIdList" item="areaId" separator="," open="(" close=")">
+                #{areaId}
+            </foreach>
+        </if>
+        <if test="param.superviseCompanySocialCreditCode != null and param.superviseCompanySocialCreditCode !=''">
+            and maintain_Infrastructure.supervision_company_credit_code = #{param.superviseCompanySocialCreditCode}
+        </if>
+        <if test="param.maintainCompanySocialCreditCode != null and param.maintainCompanySocialCreditCode !=''">
+            and maintain_Infrastructure.maintain_company_credit_code = #{param.maintainCompanySocialCreditCode}
+        </if>
+        <if test="param.auditingCompanySocialCreditCode != null and param.auditingCompanySocialCreditCode !=''">
+            and maintain_Infrastructure.audit_firm_credit_code = #{param.auditingCompanySocialCreditCode}
+        </if>
+        <if test="param.title != null and param.title !=''">
+            and maintain_Infrastructure.title = #{param.title}
+        </if>
+        <if test="param.areaName != null and param.areaName !=''">
+            and maintain_Infrastructure.area_name = #{param.areaName}
+        </if>
+        <if test="param.managementDepartment != null and param.managementDepartment !=''">
+            and maintain_Infrastructure.management_department = #{param.managementDepartment}
+        </if>
+        <if test="param.deviceType != null and param.deviceType !=''">
+            and maintain_Infrastructure.device_type = #{param.deviceType}
+        </if>
+        <if test="param.deviceTypeBreakdown != null and param.deviceTypeBreakdown !=''">
+            and maintain_Infrastructure.device_type_breakdown = #{param.deviceTypeBreakdown}
+        </if>
+        <if test="param.specificationsAndModels != null and param.specificationsAndModels !=''">
+            and maintain_Infrastructure.specifications_and_models = #{param.specificationsAndModels}
+        </if>
+        <if test="param.searchParam != null and param.searchParam !=''">
+            and maintain_Infrastructure.title = #{param.searchParam}
+        </if>
+        <if test="param.deviceStatus != null and param.deviceStatus != 0">
+            and maintain_Infrastructure.device_status = #{param.deviceStatus}
+        </if>
+        GROUP BY management_department
+        ORDER BY COUNT(*) DESC
+            LIMIT 1;
+    </select>
+
+</mapper>

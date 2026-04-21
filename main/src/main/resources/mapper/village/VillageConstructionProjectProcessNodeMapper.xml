@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.village.mapper.VillageConstructionProjectProcessNodeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.village.entity.VillageConstructionProjectProcessNode">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="node_or_process" property="nodeOrProcess" />
+        <result column="construction_name" property="constructionName" />
+        <result column="corroboration" property="corroboration" />
+        <result column="escalate" property="escalate" />
+        <result column="escalate_datetime" property="escalateDatetime" />
+        <result column="process_content" property="processContent" />
+        <result column="file" property="file" />
+        <result column="project_number" property="projectNumber" />
+        <result column="construction_node_start_time" property="constructionNodeStartTime" />
+        <result column="construction_node_change_time" property="constructionNodeChangeTime" />
+        <result column="construction_node_real_time" property="constructionNodeRealTime" />
+        <result column="area_id" property="areaId" />
+        <result column="node_number" property="nodeNumber" />
+        <result column="process_node_name" property="processNodeName" />
+        <result column="process_node_id" property="processNodeId" />
+        <result column="reporting_unit" property="reportingUnit" />
+    </resultMap>
+    <select id="countVillageConstructionProjectNode"
+            resultType="upc.c505.modular.village.controller.param.VillageConstructionProjectNodeAndProjectDetailReturnParam">
+        SELECT
+        project_number AS projectNumber,
+        COUNT(CASE WHEN node_or_process = 2 THEN 1 END) AS allProcess,
+        COUNT(CASE WHEN node_or_process = 2 AND process_content IS NOT NULL AND process_content != '' THEN 1 END) AS
+        finishedProcess
+        FROM
+        village_construction_project_process_node
+        <if test="projectNumberList != null and projectNumberList.size() > 0">
+            WHERE
+            project_number IN
+            <foreach collection="projectNumberList" separator="," open="(" close=")" item="projectNumber">
+                #{projectNumber}
+            </foreach>
+        </if>
+        GROUP BY
+        project_number
+    </select>
+    <select id="selectVillageConstructionProjectProcessNode"
+            resultType="upc.c505.modular.village.controller.param.VillageConstructionProjectProcessNodeReturnParam">
+        SELECT
+        MAX(project.operation_datetime) AS operationDatetime,
+        project.project_number AS projectNumber,
+        COUNT(CASE WHEN node_or_process = 2 THEN 1 END) AS nodeNumber,
+        COUNT(CASE WHEN node_or_process = 1 THEN 1 END) AS processNumber
+        FROM
+        village_construction_project_process_node node RIGHT JOIN village_construction_project_details AS project ON node.project_number = project.project_number
+        <if test="villageConstructionProjectProcessNodeSearchParam.startTime != null
+        and villageConstructionProjectProcessNodeSearchParam.startTime != ''
+        and villageConstructionProjectProcessNodeSearchParam.endTime != null
+        and villageConstructionProjectProcessNodeSearchParam.endTime != ''">
+            AND node.escalate_datetime BETWEEN #{villageConstructionProjectProcessNodeSearchParam.startTime} AND #{villageConstructionProjectProcessNodeSearchParam.endTime}
+        </if>
+        <if test="villageConstructionProjectProcessNodeSearchParam.nodeOrProcess != null
+        and villageConstructionProjectProcessNodeSearchParam.nodeOrProcess >=0 ">
+            AND node.node_or_process = #{villageConstructionProjectProcessNodeSearchParam.nodeOrProcess}
+        </if>
+        <if test="villageConstructionProjectProcessNodeSearchParam.yesOrNotReported = '1'">
+            AND node.escalate is not null
+            AND node.escalate != ''
+        </if>
+        WHERE 1=1
+        <if test="areaIdSearchList != null and areaIdSearchList.size() > 0">
+            AND project.area_id IN
+            <foreach collection="areaIdSearchList" separator="," open="(" close=")" item="areaId">
+                #{areaId}
+            </foreach>
+        </if>
+        <if test="areaId != null and areaId != ''">
+            AND project.area_id = #{areaId}
+        </if>
+        <if test="villageConstructionProjectProcessNodeSearchParam.projectNumber != null
+        and villageConstructionProjectProcessNodeSearchParam.projectNumber != ''">
+            AND project.project_number = #{villageConstructionProjectProcessNodeSearchParam.projectNumber}
+        </if>
+        <if test="supervisionCompanyCreditCode != null and supervisionCompanyCreditCode != ''">
+            AND project.supervision_credit_code = #{supervisionCompanyCreditCode}
+        </if>
+        <if test="constructionCreditCode != null and constructionCreditCode != ''">
+            AND project.construction_credit_code = #{constructionCreditCode}
+        </if>
+        <if test="villageConstructionProjectProcessNodeSearchParam.projectName != null
+        and villageConstructionProjectProcessNodeSearchParam.projectName != ''">
+            AND project.project_name like CONCAT('%',#{villageConstructionProjectProcessNodeSearchParam.projectName},'%')
+        </if>
+        <if test="villageConstructionProjectProcessNodeSearchParam.constructionName != null
+        and villageConstructionProjectProcessNodeSearchParam.constructionName != ''">
+            AND project.construction_name = #{villageConstructionProjectProcessNodeSearchParam.constructionName}
+        </if>
+        <if test="villageConstructionProjectProcessNodeSearchParam.supervisionName != null
+        and villageConstructionProjectProcessNodeSearchParam.supervisionName != ''">
+            AND project.supervision_name = #{villageConstructionProjectProcessNodeSearchParam.supervisionName}
+        </if>
+        GROUP BY
+        project.project_number
+    </select>
+
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.grassroots.mapper.GrassrootsOpenMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.grassroots.entity.GrassrootsOpen">
+        <id column="id" property="id" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+        <result column="type" property="type" />
+        <result column="record_person" property="recordPerson" />
+        <result column="dept_id" property="deptId" />
+        <result column="dept_name" property="deptName" />
+        <result column="record_date" property="recordDate" />
+        <result column="release_date" property="releaseDate" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="file" property="file" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <select id="countOpenNumberByType"
+            resultType="upc.c505.modular.grassroots.controller.param.OpenTypeCountReturnParam">
+        select
+            (select count(*)
+                 from grassroots_open
+                    where id is not null ) as openTotal,
+            (select count(*)
+                 from grassroots_open
+                    where id is not null
+                        and type = 2) as partyAffairs,
+            (select count(*)
+                from grassroots_open
+                    where id is not null
+                        and type = 1) as finance,
+            (select count(*)
+                from grassroots_open
+                    where id is not null
+                        and type = 0) as villageAffairs
+    </select>
+
+</mapper>

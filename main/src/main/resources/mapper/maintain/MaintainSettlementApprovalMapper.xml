@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.maintain.mapper.MaintainSettlementApprovalMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.maintain.entity.MaintainSettlementApproval">
+        <id column="maintain_settlement_approval_id" property="maintainSettlementApprovalId" />
+        <result column="maintain_maintenance_approval_id" property="maintainMaintenanceApprovalId" />
+        <result column="settlement_application_time" property="settlementApplicationTime" />
+        <result column="applicant" property="applicant" />
+        <result column="project_construction_content" property="projectConstructionContent" />
+        <result column="related_attachments" property="relatedAttachments" />
+        <result column="approval_object" property="approvalObject" />
+        <result column="cumulative_time" property="cumulativeTime" />
+        <result column="approval_settlement_status" property="approvalSettlementStatus" />
+        <result column="approval_status" property="approvalStatus" />
+        <result column="supervision_approver" property="supervisionApprover" />
+        <result column="supervision_approval_time" property="supervisionApprovalTime" />
+        <result column="supervision_approval_result" property="supervisionApprovalResult" />
+        <result column="supervision_approver_signature" property="supervisionApproverSignature" />
+        <result column="audit_company_approver" property="auditCompanyApprover" />
+        <result column="audit_company_approval_time" property="auditCompanyApprovalTime" />
+        <result column="audit_company_approval_result" property="auditCompanyApprovalResult" />
+        <result column="audit_company_approval_signature" property="auditCompanyApprovalSignature" />
+        <result column="first_township_approver" property="firstTownshipApprover" />
+        <result column="first_township_approval_time" property="firstTownshipApprovalTime" />
+        <result column="first_township_approval_result" property="firstTownshipApprovalResult" />
+        <result column="first_township_approval_signature" property="firstTownshipApprovalSignature" />
+        <result column="second_township_approver" property="secondTownshipApprover" />
+        <result column="second_township_approval_time" property="secondTownshipApprovalTime" />
+        <result column="second_township_approval_result" property="secondTownshipApprovalResult" />
+        <result column="second_township_approval_signature" property="secondTownshipApprovalSignature" />
+        <result column="third_township_approver" property="thirdTownshipApprover" />
+        <result column="third_township_approval_time" property="thirdTownshipApprovalTime" />
+        <result column="third_township_approval_result" property="thirdTownshipApprovalResult" />
+        <result column="third_township_approval_signature" property="thirdTownshipApprovalSignature" />
+        <result column="fourth_township_approver" property="fourthTownshipApprover" />
+        <result column="fourth_township_approval_time" property="fourthTownshipApprovalTime" />
+        <result column="fourth_township_approval_result" property="fourthTownshipApprovalResult" />
+        <result column="fourth_township_approval_signature" property="fourthTownshipApprovalSignature" />
+        <result column="financial_bureau_approver" property="financialBureauApprover" />
+        <result column="financial_bureau_approval_time" property="financialBureauApprovalTime" />
+        <result column="financial_bureau_approval_result" property="financialBureauApprovalResult" />
+        <result column="financial_bureau_approval_signature" property="financialBureauApprovalSignature" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+    </resultMap>
+
+</mapper>

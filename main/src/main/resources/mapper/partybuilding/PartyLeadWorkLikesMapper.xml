@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.partybuilding.mapper.PartyLeadWorkLikesMapper">
+
+    <!-- 映射 PartyLeadWorkLikes 的结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.partybuilding.entity.PartyLeadWorkLikes">
+        <id column="id" property="partyLeadWorkLikesid" />
+        <result column="party_lead_work_id" property="partyLeadWorkId" />
+        <result column="sys_user_id" property="sysUserId" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <insert id="addPartyLeadWorkLikes"></insert>
+
+
+    <!-- 根据 lead_title 模糊查询并联表查询的 SQL 语句 -->
+    <select id="selectByLeadTitle" resultType="upc.c505.modular.partybuilding.entity.PartyBuildingPartyLeadWorkandLikes">
+        SELECT
+            plwl.id AS likeId,
+            plwl.sys_user_id ,
+            plwl.creator AS likeCreator,
+            plwl.add_datetime AS likeAddDatetime,
+            plwl.operator AS likeOperator,
+            plwl.operation_datetime AS likeOperationDatetime,
+            pbplw.id ,
+            pbplw.creator ,
+            pbplw.add_datetime ,
+            pbplw.operator ,
+            pbplw.operation_datetime ,
+            pbplw.lead_type,
+            pbplw.lead_title,
+            pbplw.recorder,
+            pbplw.record_datetime,
+            pbplw.name_party,
+            pbplw.town_street,
+            pbplw.party_organization,
+            pbplw.location,
+            pbplw.content,
+            pbplw.photo,
+            pbplw.publish_status,
+            pbplw.name_party_picture,
+            pbplw.area_id,
+            pbplw.likes_number,
+            pbplw.views_number
+        FROM
+            party_lead_work_likes plwl
+                JOIN
+            party_building_party_lead_work pbplw ON plwl.party_lead_work_id = pbplw.id
+        WHERE
+            pbplw.lead_title LIKE CONCAT('%', #{leadTitle}, '%')
+    </select>
+    <select id="selectSysUserIdByCreator" resultType="java.lang.Long">
+        Select id
+        from sys_user
+        where username = #{creator}
+    </select>
+
+</mapper>

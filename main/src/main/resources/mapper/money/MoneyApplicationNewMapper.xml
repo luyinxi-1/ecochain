@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.money.mapper.MoneyApplicationNewMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.money.entity.MoneyApplicationNew">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="money_type" property="moneyType" />
+        <result column="applicant" property="applicant" />
+        <result column="applicant_time" property="applicantTime" />
+        <result column="application_title" property="applicationTitle" />
+        <result column="message" property="message" />
+        <result column="application_picture" property="applicationPicture" />
+        <result column="accumulated_time" property="accumulatedTime" />
+        <result column="circulation_status" property="circulationStatus" />
+        <result column="applicant_id" property="applicantId" />
+        <result column="circulation_way" property="circulationWay" />
+        <result column="reporting_area_id" property="reportingAreaId" />
+    </resultMap>
+
+</mapper>

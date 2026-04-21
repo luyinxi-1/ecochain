@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainProductTagMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainProductTag">
+        <id column="id" property="id" />
+        <result column="tag_name" property="tagName" />
+        <result column="status" property="status" />
+        <result column="sort_number" property="sortNumber" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="area_id" property="areaId" />
+        <result column="type" property="type" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <update id="updateProductTag" parameterType="upc.c505.modular.ecochain.entity.EcoChainProductTag">
+        UPDATE eco_chain_product_tag
+        <set>
+            <if test="tagName != null and tagName != ''">
+                tag_name = #{tagName},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            <if test="sortNumber != null">
+                sort_number = #{sortNumber},
+            </if>
+            <if test="color != null and color != ''">
+                color = #{color},
+            </if>
+            <if test="enterpriseName != null and enterpriseName != ''">
+                enterprise_name = #{enterpriseName},
+            </if>
+            <if test="socialCreditCode != null and socialCreditCode != ''">
+                social_credit_code = #{socialCreditCode},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId},
+            </if>
+            <if test="operator != null and operator != ''">
+                operator = #{operator},
+            </if>
+            <if test="operationDatetime != null">
+                operation_datetime = #{operationDatetime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="selectMaxSortNumber" parameterType="upc.c505.modular.ecochain.entity.EcoChainProductTag" resultType="integer">
+        SELECT MAX(sort_number) FROM eco_chain_product_tag
+        <where>
+            <if test="socialCreditCode != null and socialCreditCode != ''">
+                social_credit_code = #{socialCreditCode}
+            </if>
+        </where>
+    </select>
+
+</mapper>

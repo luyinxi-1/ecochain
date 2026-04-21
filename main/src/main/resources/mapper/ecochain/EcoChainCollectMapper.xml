@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainCollectMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainCollect">
+        <id column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="collect_name" property="collectName" />
+        <result column="collect_id" property="collectId" />
+        <result column="collect_people_id" property="collectPeopleId" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+    <!-- 查询EcoChainCollectEnterpriseParam -->
+    <select id="selectCollectEnterprise" resultType="upc.c505.modular.ecochain.controller.param.EcoChainCollectEnterpriseParam">
+        SELECT
+        e.sup_enterprise_name AS supEnterpriseName,
+        e.unit_name AS unitName,
+        e.business_place AS businessPlace,
+        e.business_scope AS businessScope,
+        et.dark_logo AS darkLogo,
+        et.light_color_logo AS lightColorLogo,
+        e.social_credit_code AS socialCreditCode
+        FROM
+        sup_enterprise e
+        LEFT JOIN
+        eco_chain_extended_table et ON e.social_credit_code = et.social_credit_code
+        <where>
+            <if test="collectId != null and collectId != ''">
+                AND e.social_credit_code = #{collectId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCollectProduct"
+            resultType="upc.c505.modular.ecochain.controller.param.EcoChainCollectProductParam">
+        SELECT
+        e.unit_name AS unitName,
+        ep.picture AS productPicture,
+        ep.product_name AS productName,
+        ep.eco_chain_product_parameter_id AS productParameterId,
+        ep.id AS productId,
+        se.sup_enterprise_name AS supEnterpriseName,
+        se.business_place AS businessPlace
+        FROM
+        eco_chain_product_manager ep
+        LEFT JOIN
+        sup_enterprise e ON ep.social_credit_code = e.social_credit_code
+        LEFT JOIN
+        sup_enterprise se ON ep.social_credit_code = se.social_credit_code
+        <where>
+            <if test="collectId != null and collectId != ''">
+                AND ep.id = #{collectId}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectCollectPeople" resultType="upc.c505.modular.ecochain.controller.param.EcoChainCollectPeopleParam">
+        SELECT
+        pe.people_name AS peopleName,
+        pe.job AS peopleJob,
+        pe.contact_phone AS contactPhone,
+        pe.enterprise_name AS enterpriseName,
+        pe.picture AS peoplePicture
+        FROM
+        people_enterprise pe
+        <where>
+            <if test="collectId != null and collectId != ''">
+                AND pe.id = #{collectId}
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>

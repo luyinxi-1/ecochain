@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.govservice.mapper.GovServiceAgricultureMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.govservice.entity.GovServiceAgriculture">
+        <id column="id" property="id" />
+        <result column="agriculture_type_id" property="agricultureTypeId" />
+        <result column="agriculture_type" property="agricultureType" />
+        <result column="agriculture_title" property="agricultureTitle" />
+        <result column="agriculture_title_second" property="agricultureTitleSecond" />
+        <result column="agriculture_picture" property="agriculturePicture" />
+        <result column="agriculture_detail" property="agricultureDetail" />
+        <result column="agriculture_recorder" property="agricultureRecorder" />
+        <result column="agriculture_record_date" property="agricultureRecordDate" />
+        <result column="release_state" property="releaseState" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainEnterprisePublicityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainEnterprisePublicity">
+        <id column="id" property="id" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="name" property="name" />
+        <result column="sort" property="sort" />
+        <result column="enable_or_not" property="enableOrNot" />
+        <result column="propaganda_slogan" property="propagandaSlogan" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="creator" property="creator" />
+        <result column="photo" property="photo" />
+    </resultMap>
+
+</mapper>

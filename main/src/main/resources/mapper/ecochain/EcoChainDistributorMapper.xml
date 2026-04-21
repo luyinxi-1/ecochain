@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainDistributorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainDistributor">
+        <id column="id" property="id" />
+        <result column="sharer_phone" property="sharerPhone" />
+        <result column="sharer_name" property="sharerName" />
+        <result column="sharer_social_credit_code" property="sharerSocialCreditCode" />
+        <result column="registrant_phone" property="registrantPhone" />
+        <result column="registrant_name" property="registrantName" />
+        <result column="registrant_social_credit_code" property="registrantSocialCreditCode" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <select id="selectDistributorsList"
+            resultType="upc.c505.modular.ecochain.controller.param.EcoChainDistributorListParam"
+            parameterType="upc.c505.modular.ecochain.controller.param.EcoChainDistributorPageSearchParam">
+        SELECT
+        d.id AS id,
+        d.sharer_phone AS sharerPhone,
+        d.sharer_name AS sharerName,
+        d.sharer_social_credit_code AS sharerSocialCreditCode,
+        d.registrant_phone AS registrantPhone,
+        d.registrant_name AS registrantName,
+        d.registrant_social_credit_code AS registrantSocialCreditCode,
+        d.creator AS creator,
+        d.add_datetime AS addDatetime,
+        d.operator AS operator,
+        d.operation_datetime AS operationDatetime,
+        a.end_date AS endDate,
+        a.storage_capacity AS storageCapacity,
+        a.authorize_status AS authorizeStatus,
+        a.payment_date AS paymentDate,
+        a.area_id As areaId
+        FROM
+        eco_chain_distributor d
+        LEFT JOIN
+        eco_chain_enterprise_authorize a ON d.sharer_social_credit_code = a.credit_code
+        WHERE
+        1 = 1
+        <if test="params.sharerPhone != null and params.sharerPhone != ''">
+            AND d.sharer_phone = #{params.sharerPhone}
+        </if>
+        <if test="params.sharerName != null and params.sharerName != ''">
+            AND d.sharer_name LIKE CONCAT('%', #{params.sharerName}, '%')
+        </if>
+        <if test="params.sharerSocialCreditCode != null and params.sharerSocialCreditCode != ''">
+            AND d.sharer_social_credit_code = #{params.sharerSocialCreditCode}
+        </if>
+        <if test="params.registrantPhone != null and params.registrantPhone != ''">
+            AND d.registrant_phone = #{params.registrantPhone}
+        </if>
+        <if test="params.registrantName != null and params.registrantName != ''">
+            AND d.registrant_name LIKE CONCAT('%', #{params.registrantName}, '%')
+        </if>
+        <if test="params.isAuthorizeExpire != null">
+            AND (
+            (#{params.isAuthorizeExpire} = 0 AND a.end_date &lt;= NOW()) OR
+            (#{params.isAuthorizeExpire} = 1 AND a.end_date &gt; NOW())
+            )
+        </if>
+        <if test="params.startTime != null">
+            AND a.payment_date &gt;= #{params.startTime}
+        </if>
+        <if test="params.endTime != null">
+            AND a.payment_date &lt;= #{params.endTime}
+        </if>
+        <if test="params.isAsc != null">
+            ORDER BY d.operation_datetime
+            <choose>
+                <when test="params.isAsc == 1">ASC</when>
+                <otherwise>DESC</otherwise>
+            </choose>
+        </if>
+    </select>
+
+</mapper>

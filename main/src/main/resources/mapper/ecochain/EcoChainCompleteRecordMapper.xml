@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainCompleteRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainCompleteRecord">
+        <id column="id" property="id"/>
+        <result column="enterprise_name" property="enterpriseName"/>
+        <result column="social_credit_code" property="socialCreditCode"/>
+        <result column="eco_chain_build_warehouse_id" property="ecoChainBuildWarehouseId"/>
+        <result column="recorder" property="recorder"/>
+        <result column="recording_time" property="recordingTime"/>
+        <result column="operator" property="operator"/>
+        <result column="operation_datetime" property="operationDatetime"/>
+        <result column="location" property="location"/>
+        <result column="complete_record" property="completeRecord"/>
+        <result column="describe" property="describe"/>
+        <result column="amount" property="amount"/>
+        <result column="notes" property="notes"/>
+        <result column="pictures" property="pictures"/>
+    </resultMap>
+    <select id="countByRecorder" resultType="java.util.Map">
+        SELECT recorder, COUNT(*) as count
+        FROM eco_chain_complete_record
+        WHERE recording_time BETWEEN #{startTime}
+          AND #{endTime}
+          AND recorder LIKE CONCAT('%'
+            , #{name}
+            , '%')
+          AND social_credit_code = #{socialCreditCode}
+        GROUP BY recorder
+    </select>
+
+    <select id="countByDetailTypeOption" resultType="java.util.Map">
+        SELECT b.detail_type_option as detailTypeOption, COUNT(*) as count
+        FROM eco_chain_complete_record a
+            JOIN eco_chain_build_warehouse b
+        ON a.eco_chain_build_warehouse_id = b.id
+        WHERE a.recording_time BETWEEN #{startTime}
+          AND #{endTime}
+          AND b.detail_type_option LIKE CONCAT('%'
+            , #{name}
+            , '%')
+          AND a.social_credit_code = #{socialCreditCode}
+        GROUP BY b.detail_type_option;
+    </select>
+
+    <select id="countByIndustryGroupOption" resultType="java.util.Map">
+        SELECT b.industry_group_option as industryGroupOption, COUNT(*) as count
+        FROM eco_chain_complete_record a
+            JOIN eco_chain_build_warehouse b
+        ON a.eco_chain_build_warehouse_id = b.id
+        WHERE a.recording_time BETWEEN #{startTime}
+          AND #{endTime}
+          AND b.industry_group_option LIKE CONCAT('%'
+            , #{name}
+            , '%')
+          AND a.social_credit_code = #{socialCreditCode}
+        GROUP BY b.industry_group_option;
+    </select>
+
+    <select id="countByIndustryWarehouse" resultType="java.util.Map">
+        SELECT b.industry_warehouse as industryWarehouse, COUNT(*) as count
+        FROM eco_chain_complete_record a
+            JOIN eco_chain_build_warehouse b
+        ON a.eco_chain_build_warehouse_id = b.id
+        WHERE a.recording_time BETWEEN #{startTime}
+          AND #{endTime}
+          AND b.industry_warehouse LIKE CONCAT('%'
+            , #{name}
+            , '%')
+          AND a.social_credit_code = #{socialCreditCode}
+        GROUP BY b.industry_warehouse;
+    </select>
+
+</mapper>

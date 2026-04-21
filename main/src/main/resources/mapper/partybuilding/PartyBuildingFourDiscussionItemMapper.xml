@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.partybuilding.mapper.PartyBuildingFourDiscussionItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.partybuilding.entity.PartyBuildingFourDiscussionItem">
+        <id column="id" property="id" />
+        <result column="four_id" property="fourId" />
+        <result column="item_title" property="itemTitle" />
+        <result column="item_status" property="itemStatus" />
+        <result column="current_link" property="currentLink" />
+        <result column="party_organization" property="partyOrganization" />
+        <result column="recorder_content" property="recorderContent" />
+        <result column="name_party_picture" property="namePartyPicture" />
+        <result column="data_url" property="dataUrl" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="record_name" property="recordName" />
+    </resultMap>
+
+</mapper>

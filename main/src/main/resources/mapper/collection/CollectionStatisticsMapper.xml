@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.collection.mapper.CollectionStatisticsMapper">
+
+    <select id="selectStatsPage" resultType="upc.c505.modular.collection.entity.StatsPageResult">
+        SELECT
+        c.id AS collectionId,
+        c.title AS collectionTitle,
+        SUM(CASE WHEN DATE(r.submit_time) = CURDATE() THEN 1 ELSE 0 END) AS todayCount,
+        SUM(CASE WHEN DATE(r.submit_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS yesterdayCount,
+        SUM(CASE WHEN r.submit_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 1 ELSE 0 END) AS last7DaysCount,
+        COUNT(r.id) AS totalSubmitCount,
+        COUNT(DISTINCT r.openid) AS totalParticipantCount
+        FROM collection_info c
+        LEFT JOIN registration_record r ON c.id = r.collection_id
+        <where>
+            <if test="userType == 'ENTERPRISE'">
+                c.enterprise_code = #{enterpriseCode}
+            </if>
+            <if test="userType == 'PERSONNEL'">
+                r.share_user_id = #{userId}
+            </if>
+        </where>
+        GROUP BY c.id, c.title
+    </select>
+
+    <select id="selectBasicStatsById" resultType="upc.c505.modular.collection.entity.StatsPageResult">
+        SELECT
+        c.id AS collectionId,
+        c.title AS collectionTitle,
+        SUM(CASE WHEN DATE(r.submit_time) = CURDATE() THEN 1 ELSE 0 END) AS todayCount,
+        SUM(CASE WHEN DATE(r.submit_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS yesterdayCount,
+        SUM(CASE WHEN r.submit_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 1 ELSE 0 END) AS last7DaysCount,
+        COUNT(r.id) AS totalSubmitCount,
+        COUNT(DISTINCT r.openid) AS totalParticipantCount
+        FROM collection_info c
+        LEFT JOIN registration_record r ON c.id = r.collection_id
+        WHERE c.id = #{collectionId}
+        <if test="userType == 'PERSONNEL'">
+            AND r.share_user_id = #{userId}
+        </if>
+        GROUP BY c.id, c.title
+    </select>
+
+    <select id="selectDailySubmitList" resultType="upc.c505.modular.collection.entity.DailySubmitRecord">
+        SELECT
+        DATE_FORMAT(r.submit_time, '%Y-%m-%d') AS submitDate,
+        COUNT(r.id) AS count
+        FROM registration_record r
+        WHERE r.collection_id = #{collectionId}
+        AND r.submit_time >= CONCAT(#{startDate}, ' 00:00:00')
+        AND r.submit_time &lt;= CONCAT(#{endDate}, ' 23:59:59')
+        <if test="userType == 'PERSONNEL'">
+            AND r.share_user_id = #{userId}
+        </if>
+        GROUP BY DATE_FORMAT(r.submit_time, '%Y-%m-%d')
+        ORDER BY submitDate ASC
+    </select>
+
+    <select id="selectDistributionStats" resultType="upc.c505.modular.collection.entity.DistributionStatsResult">
+        SELECT
+        r.share_user_id AS collectorId,
+        u.username AS collectorName,  COUNT(r.id) AS submitCount
+        FROM registration_record r
+        LEFT JOIN collection_info c ON r.collection_id = c.id
+        LEFT JOIN sys_user u ON r.share_user_id = u.id
+        WHERE c.enterprise_code = #{enterpriseCode}
+        AND r.submit_time >= CONCAT(#{startDate}, ' 00:00:00')
+        AND r.submit_time &lt;= CONCAT(#{endDate}, ' 23:59:59')
+        <if test="collectorName != null and collectorName != ''">
+            AND u.username LIKE CONCAT('%', #{collectorName}, '%') </if>
+        GROUP BY r.share_user_id, u.username ORDER BY submitCount DESC
+    </select>
+
+</mapper>

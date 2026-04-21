@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.supenterprise.mapper.SupOperateLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.supenterprise.entity.SupOperateLog">
+        <id column="id" property="id" />
+        <result column="operate_mode" property="operateMode" />
+        <result column="operate_desc" property="operateDesc" />
+        <result column="operate_date" property="operateDate" />
+        <result column="operate_user_name" property="operateUserName" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="operate_ip" property="operateIp" />
+        <result column="operate_method" property="operateMethod" />
+    </resultMap>
+    <insert id="insertBatch" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+        insert into sup_operate_log (id,operate_mode, operate_desc,
+        operate_date, operate_user_name, social_credit_code
+        , operate_ip, operate_method)
+        values
+        <foreach collection="list" item="record" separator=",">
+            ( #{record.id,jdbcType=INTEGER},#{record.operateMode,jdbcType=VARCHAR},
+            #{record.operateDesc,jdbcType=VARCHAR},
+            #{record.operateDate,jdbcType=TIMESTAMP}, #{record.operateUserName,jdbcType=VARCHAR},
+            #{record.socialCreditCode,jdbcType=VARCHAR},
+            #{record.operateIp,jdbcType=VARCHAR},
+            #{record.operateMethod,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainDictDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainDictData">
+        <id column="id" property="id" />
+        <result column="dict_key" property="dictKey" />
+        <result column="dict_sort" property="dictSort" />
+        <result column="name" property="name" />
+        <result column="dict_type" property="dictType" />
+        <result column="is_default" property="isDefault" />
+        <result column="status" property="status" />
+        <result column="color" property="color" />
+        <result column="remark" property="remark" />
+        <result column="creator" property="creator" />
+        <result column="add_date_time" property="addDateTime" />
+        <result column="operator" property="operator" />
+        <result column="operation_date_time" property="operationDateTime" />
+        <result column="area_id" property="areaId" />
+        <result column="picture" property="picture" />
+    </resultMap>
+
+    <sql id="selectDictDataVo">
+        select *
+        from eco_chain_dict_data
+    </sql>
+
+    <select id="selectDictDataList" parameterType="upc.c505.modular.ecochain.entity.EcoChainDictData" resultMap="BaseResultMap">
+        <include refid="selectDictDataVo"/>
+        <where>
+            <if test="dictData.dictType != null and dictData.dictType != ''">
+                AND dict_type = #{dictData.dictType}
+            </if>
+            <if test="dictData.name != null and dictData.name != ''">
+                AND name like concat('%', #{dictData.name}, '%')
+            </if>
+            <if test="dictData.status != null and dictData.status != ''">
+                AND status = #{dictData.status}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDictName" resultType="java.lang.String">
+        select name
+        from eco_chain_dict_data
+        where dict_type = #{dictType}
+          and eco_chain_dict_data.dict_key = #{dictKey}
+    </select>
+
+    <insert id="insertDictData" parameterType="upc.c505.modular.ecochain.entity.EcoChainDictData">
+        insert into eco_chain_dict_data(
+        <if test="dictData.dictSort != null">dict_sort,</if>
+        <if test="dictData.name != null and dictData.name != ''">name,</if>
+        dict_key,
+        <if test="dictData.dictType != null and dictData.dictType != ''">dict_type,</if>
+        <if test="dictData.isDefault != null and dictData.isDefault != ''">is_default,</if>
+        <if test="dictData.status != null">status,</if>
+        <if test="dictData.color != null and dictData.color != ''">color,</if>
+        <if test="dictData.remark != null and dictData.remark != ''">remark,</if>
+        <if test="dictData.creator != null and dictData.creator != ''">creator,</if>
+        <if test="dictData.areaId != null">area_id,</if>
+        add_date_time,
+        <if test='dictData.picture != null'>picture</if>
+        )values(
+        <if test="dictData.dictSort != null">#{dictData.dictSort},</if>
+        <if test="dictData.name != null and dictData.name != ''">#{dictData.name},</if>
+        #{dictData.dictKey},
+        <if test="dictData.dictType != null and dictData.dictType != ''">#{dictData.dictType},</if>
+        <if test="dictData.isDefault != null and dictData.isDefault != ''">#{dictData.isDefault},</if>
+        <if test="dictData.status != null">#{dictData.status},</if>
+        <if test="dictData.color != null and dictData.color != ''">#{dictData.color},</if>
+        <if test="dictData.remark != null and dictData.remark != ''">#{dictData.remark},</if>
+        <if test="dictData.creator != null and dictData.creator != ''">#{dictData.creator},</if>
+        <if test="dictData.areaId != null">#{dictData.areaId},</if>
+        sysdate(),
+        <if test="dictData.picture != null">#{dictData.picture}</if>
+        )
+    </insert>
+
+    <update id="updateDictData" parameterType="upc.c505.modular.dict.entity.SysDictData">
+        update eco_chain_dict_data
+        <set>
+            <if test="dictData.dictSort != null">dict_sort = #{dictData.dictSort},</if>
+            <if test="dictData.name != null and dictData.name != ''">name = #{dictData.name},</if>
+            <if test="dictData.dictKey != null and dictData.dictKey != ''">dict_key = #{dictData.dictKey},</if>
+            <if test="dictData.dictType != null and dictData.dictType != ''">dict_type = #{dictData.dictType},</if>
+            <if test="dictData.isDefault != null and dictData.isDefault != ''">is_default = #{dictData.isDefault},</if>
+            <if test="dictData.color != null and dictData.color != ''">color = #{dictData.color},</if>
+            <if test="dictData.status != null">status = #{dictData.status},</if>
+            <if test="dictData.remark != null">remark = #{dictData.remark},</if>
+            <if test="dictData.operator != null and dictData.operator != ''">operator = #{dictData.operator},</if>
+            operation_date_time = sysdate(),
+            <if test="dictData.picture != null">picture = #{dictData.picture}</if>
+        </set>
+        where id = #{dictData.id}
+    </update>
+
+    <delete id="deleteDictDataById" parameterType="java.lang.Integer">
+        delete
+        from eco_chain_dict_data
+        where id = #{Id}
+    </delete>
+
+    <select id="selectByDictType" resultType="upc.c505.modular.ecochain.entity.EcoChainDictData">
+        select *
+        from eco_chain_dict_data
+        where dict_type = #{dictType}
+        <if test="areaId != null">
+            AND (eco_chain_dict_data.area_id = #{areaId})
+        </if>
+        <if test="name != null and name != ''">
+            AND (eco_chain_dict_data.name LIKE CONCAT('%', #{name}, '%'))
+        </if>
+        order by dict_sort,add_date_time desc
+    </select>
+
+    <update id="updateDictDataType" parameterType="java.lang.String">
+        update eco_chain_dict_data
+        set dict_type = #{newDictType}
+        where dict_type = #{oldDictType}
+    </update>
+
+    <select id="selectDictDataByType" parameterType="upc.c505.modular.ecochain.entity.EcoChainDictData" resultMap="BaseResultMap">
+        <include refid="selectDictDataVo"/>
+        where status = '0' and dict_type = #{dictType} order by dict_sort asc
+    </select>
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.money.mapper.MoneyProcessApproverMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.money.entity.MoneyProcessApprover">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="approver_num" property="approverNum" />
+        <result column="approver" property="approver" />
+        <result column="approver_duty" property="approverDuty" />
+        <result column="approver_control_area" property="approverControlArea" />
+        <result column="sign_area" property="signArea" />
+        <result column="money_process_id" property="moneyProcessId" />
+        <result column="approver_id" property="approverId" />
+        <result column="electronic_signature_photo" property="electronicSignaturePhoto" />
+        <result column="electronic_signature_photo_x" property="electronicSignaturePhotoX" />
+        <result column="electronic_signature_photo_y" property="electronicSignaturePhotoY" />
+    </resultMap>
+
+</mapper>

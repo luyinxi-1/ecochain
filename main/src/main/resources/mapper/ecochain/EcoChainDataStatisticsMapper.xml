@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainDataStatisticsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainDataStatistics">
+        <id column="id" property="id" />
+        <result column="statistical_type" property="statisticalType" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="wechat_avatar" property="wechatAvatar" />
+        <result column="wechat_name" property="wechatName" />
+        <result column="phone_number" property="phoneNumber" />
+        <result column="eco_chain_product_classification_id" property="ecoChainProductClassificationId" />
+        <result column="product_classification" property="productClassification" />
+        <result column="eco_chain_product_manager_id" property="ecoChainProductManagerId" />
+        <result column="product_name" property="productName" />
+        <result column="area_id" property="areaId" />
+        <result column="creator" property="creator" />
+        <result column="operator" property="operator" />
+        <result column="operation_time" property="operationTime" />
+    </resultMap>
+
+
+</mapper>

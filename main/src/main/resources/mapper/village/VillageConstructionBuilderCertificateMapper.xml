@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.village.mapper.VillageConstructionBuilderCertificateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.village.entity.VillageConstructionBuilderCertificate">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="qualification_certificate" property="qualificationCertificate" />
+        <result column="validity_time_start" property="validityTimeStart" />
+        <result column="validity_time_end" property="validityTimeEnd" />
+        <result column="upload_name" property="uploadName" />
+        <result column="upload_datetime" property="uploadDatetime" />
+        <result column="builder_id" property="builderId" />
+        <result column="picture" property="picture" />
+        <result column="area_id" property="areaId" />
+    </resultMap>
+
+</mapper>

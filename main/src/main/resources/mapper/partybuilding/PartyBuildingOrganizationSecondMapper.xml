@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.partybuilding.mapper.PartyBuildingOrganizationSecondMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.partybuilding.entity.PartyBuildingOrganizationSecond">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="second_name" property="secondName" />
+        <result column="second_charge_name" property="secondChargeName" />
+        <result column="second_charge_phone" property="secondChargePhone" />
+        <result column="second_picture" property="secondPicture" />
+        <result column="second_location" property="secondLocation" />
+        <result column="second_location_latitude" property="secondLocationLatitude" />
+        <result column="second_location_longitude" property="secondLocationLongitude" />
+        <result column="first_id" property="firstId" />
+        <result column="first_name" property="firstName" />
+        <result column="no" property="no" />
+        <result column="area_id" property="areaId" />
+    </resultMap>
+
+</mapper>

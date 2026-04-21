@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.maintain.mapper.MaintainProcedureMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.maintain.entity.MaintainProcedure">
+        <id column="maintain_procedure_id" property="maintainProcedureId" />
+        <result column="maintain_approval_application_id" property="maintainApprovalApplicationId" />
+        <result column="current_state" property="currentState" />
+        <result column="construction_info" property="constructionInfo" />
+        <result column="construction_location" property="constructionLocation" />
+        <result column="pre_construction_photo" property="preConstructionPhoto" />
+        <result column="pre_uploader" property="preUploader" />
+        <result column="pre_datetime" property="preDatetime" />
+        <result column="ing_construction_photo" property="ingConstructionPhoto" />
+        <result column="ing_uploader" property="ingUploader" />
+        <result column="ing_datetime" property="ingDatetime" />
+        <result column="fini_construction_photo" property="finiConstructionPhoto" />
+        <result column="fini_uploader" property="finiUploader" />
+        <result column="fini_datetime" property="finiDatetime" />
+        <result column="location_x" property="locationX" />
+        <result column="location_y" property="locationY" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="area_id" property="areaId" />
+        <result column="area_name" property="areaName" />
+    </resultMap>
+
+</mapper>

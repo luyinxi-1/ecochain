@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainMainPromotionalImageMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainMainPromotionalImage">
+        <id column="id" property="id" />
+        <result column="picture_name" property="pictureName" />
+        <result column="rotation_sequence" property="rotationSequence" />
+        <result column="status" property="status" />
+        <result column="promotion_slogan" property="promotionSlogan" />
+        <result column="picture" property="picture" />
+        <result column="area_id" property="areaId" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <update id="updateMainPromotionalImage" parameterType="upc.c505.modular.ecochain.entity.EcoChainMainPromotionalImage">
+        UPDATE eco_chain_main_promotional_image
+        <set>
+            <if test="pictureName != null and pictureName != ''">
+                picture_name = #{pictureName},
+            </if>
+            <if test="rotationSequence != null and rotationSequence != ''">
+                rotation_sequence = #{rotationSequence},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="promotionSlogan != null">
+                promotion_slogan = #{promotionSlogan},
+            </if>
+            <if test="picture != null and picture != ''">
+                picture = #{picture},
+            </if>
+            <if test="enterpriseName != null and enterpriseName != ''">
+                enterprise_name = #{enterpriseName},
+            </if>
+            <if test="socialCreditCode != null and socialCreditCode != ''">
+                social_credit_code = #{socialCreditCode},
+            </if>
+            <if test="areaId != null">
+                area_id = #{areaId},
+            </if>
+            <if test="creator != null and creator != ''">
+                creator = #{creator},
+            </if>
+            <if test="addDatetime != null">
+                add_datetime = #{addDatetime},
+            </if>
+            <if test="operator != null and operator != ''">
+                operator = #{operator},
+            </if>
+            <if test="operationDatetime != null">
+                operation_datetime = #{operationDatetime}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <select id="selectMaxRotationSequence" resultType="java.lang.Integer" parameterType="upc.c505.modular.ecochain.entity.EcoChainMainPromotionalImage">
+        SELECT MAX(rotation_sequence) FROM eco_chain_main_promotional_image
+        <where>
+            <if test="socialCreditCode != null and socialCreditCode != ''">
+                social_credit_code = #{socialCreditCode}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainBuildWarehouseMapper">
+
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainBuildWarehouse">
+        <id column="id" property="id" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="batch_number" property="batchNumber" />
+        <result column="eco_chain_type_configuration_id" property="ecoChainTypeConfigurationId" />
+        <result column="detail_type_option" property="detailTypeOption" />
+        <result column="eco_chain_regional_configuration_id" property="ecoChainRegionalConfigurationId" />
+        <result column="industry_group_option" property="industryGroupOption" />
+        <result column="industry_warehouse" property="industryWarehouse" />
+        <result column="warahouse_contact" property="warahouseContact" />
+        <result column="warahouse_phone" property="warahousePhone" />
+        <result column="quantity" property="quantity" />
+        <result column="notes" property="notes" />
+        <result column="warahouse_pictures" property="warahousePictures" />
+        <result column="visible_people_name" property="visiblePeopleName" />
+        <result column="visible_people" property="visiblePeople" />
+        <result column="status" property="status" />
+        <result column="market_pricing" property="marketPricing" />
+        <result column="warranty_period" property="warrantyPeriod" />
+        <result column="other_description" property="otherDescription" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+    <update id="updateStatusById">
+        UPDATE eco_chain_build_warehouse
+        SET status = #{status}, operation_datetime = #{now}, operator = #{userName}
+        WHERE id = #{warehouseId}
+    </update>
+
+    <update id="updateByWarehouseId" parameterType="upc.c505.modular.ecochain.entity.EcoChainBuildWarehouse">
+        UPDATE eco_chain_build_warehouse
+        <set>
+            <if test="enterpriseName != null and enterpriseName != ''">
+                enterprise_name = #{enterpriseName},
+            </if>
+            <if test="socialCreditCode != null and socialCreditCode != ''">
+                social_credit_code = #{socialCreditCode},
+            </if>
+            <if test="batchNumber != null and batchNumber != ''">
+                batch_number = #{batchNumber},
+            </if>
+            <if test="ecoChainTypeConfigurationId != null and ecoChainTypeConfigurationId != ''">
+                eco_chain_type_configuration_id = #{ecoChainTypeConfigurationId},
+            </if>
+            <if test="detailTypeOption != null and detailTypeOption != ''">
+                detail_type_option = #{detailTypeOption},
+            </if>
+            <if test="ecoChainRegionalConfigurationId != null and ecoChainRegionalConfigurationId != ''">
+                eco_chain_regional_configuration_id = #{ecoChainRegionalConfigurationId},
+            </if>
+            <if test="industryGroupOption != null and industryGroupOption != ''">
+                industry_group_option = #{industryGroupOption},
+            </if>
+            <if test="industryWarehouse != null and industryWarehouse != ''">
+                industry_warehouse = #{industryWarehouse},
+            </if>
+            <if test="isCase != null">
+                is_case = #{isCase},
+            </if>
+            <if test="warahouseContact != null and warahouseContact != ''">
+                warahouse_contact = #{warahouseContact},
+            </if>
+            <if test="warahousePhone != null and warahousePhone != ''">
+                warahouse_phone = #{warahousePhone},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity},
+            </if>
+            <if test="notes != null and notes != ''">
+                notes = #{notes},
+            </if>
+            <if test="warahousePictures != null and warahousePictures != ''">
+                warahouse_pictures = #{warahousePictures},
+            </if>
+            <if test="visiblePeopleName != null and visiblePeopleName != ''">
+                visible_people_name = #{visiblePeopleName},
+            </if>
+            <if test="visiblePeople != null and visiblePeople != ''">
+                visible_people = #{visiblePeople},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="marketPricing != null">
+                market_pricing = #{marketPricing},
+            </if>
+            <if test="warrantyPeriod != null and warrantyPeriod != ''">
+                warranty_period = #{warrantyPeriod},
+            </if>
+            <if test="otherDescription != null and otherDescription != ''">
+                other_description = #{otherDescription},
+            </if>
+            <if test="creator != null and creator != ''">
+                creator = #{creator},
+            </if>
+            <if test="addDatetime != null">
+                add_datetime = #{addDatetime},
+            </if>
+            <if test="operator != null and operator != ''">
+                operator = #{operator},
+            </if>
+            <if test="operationDatetime != null">
+                operation_datetime = #{operationDatetime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="finishWarehouse" parameterType="upc.c505.modular.ecochain.controller.param.EcoChainBuildWareHouseFinishParam">
+        UPDATE eco_chain_build_warehouse
+        <set>
+            <if test="marketPricing != null">
+                market_pricing = #{marketPricing},
+            </if>
+            <if test="warrantyPeriod != null and warrantyPeriod != ''">
+                warranty_period = #{warrantyPeriod},
+            </if>
+            <if test="otherDescription != null and otherDescription != ''">
+                other_description = #{otherDescription},
+            </if>
+        </set>
+        WHERE id = #{ecoChainBuildWarehouseId}
+    </update>
+    <update id="updateAllCompletionDatetime" parameterType="upc.c505.modular.ecochain.controller.param.EcoChainBuildWareHouseFinishParam">
+
+        UPDATE eco_chain_build_warehouse
+        SET all_completion_datetime = #{allCompletionDatetime}
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.auth.mapper.NewSysAreaMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.auth.entity.SysArea">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="area_type" property="areaType" />
+        <result column="area_name" property="areaName" />
+        <result column="seq" property="seq" />
+        <result column="status" property="status" />
+        <result column="flag" property="flag" />
+        <result column="remark" property="remark" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+    <select id="getChildAreaIdList" resultType="java.lang.Long">
+        WITH RECURSIVE AreaCTE AS (
+            SELECT id FROM sys_area WHERE id = #{id}
+            UNION ALL
+            SELECT a.id FROM sys_area a JOIN AreaCTE cte ON a.parent_id = cte.id
+        )
+        SELECT * FROM AreaCTE;
+    </select>
+
+</mapper>

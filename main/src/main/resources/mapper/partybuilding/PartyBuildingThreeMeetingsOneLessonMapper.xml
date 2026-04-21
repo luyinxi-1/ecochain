@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.partybuilding.mapper.PartyBuildingThreeMeetingsOneLessonMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.partybuilding.entity.PartyBuildingThreeMeetingsOneLesson">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="publish_name" property="publishName" />
+        <result column="publish_datetime" property="publishDatetime" />
+        <result column="town_street" property="townStreet" />
+        <result column="meeting_type" property="meetingType" />
+        <result column="party_organization" property="partyOrganization" />
+        <result column="meeting_datetime" property="meetingDatetime" />
+        <result column="deadline_time" property="deadlineTime" />
+        <result column="meeting_title" property="meetingTitle" />
+        <result column="location" property="location" />
+        <result column="content" property="content" />
+        <result column="recorder" property="recorder" />
+        <result column="record_datetime" property="recordDatetime" />
+        <result column="name_party" property="nameParty" />
+        <result column="action_photo" property="actionPhoto" />
+        <result column="recorder_content" property="recorderContent" />
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.prosperity.mapper.ProsperityInterconnectionMarketMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.prosperity.entity.ProsperityInterconnectionMarket">
+        <id column="id" property="id" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="publish_name" property="publishName" />
+        <result column="contact_phone" property="contactPhone" />
+        <result column="publish_datetime" property="publishDatetime" />
+        <result column="publish_area" property="publishArea" />
+        <result column="publish_attribute" property="publishAttribute" />
+        <result column="publish_status" property="publishStatus" />
+        <result column="publish_type" property="publishType" />
+        <result column="service_area" property="serviceArea" />
+        <result column="address" property="address" />
+        <result column="publish_title" property="publishTitle" />
+        <result column="publish_content" property="publishContent" />
+        <result column="publish_picture" property="publishPicture" />
+        <result column="help_number" property="helpNumber" />
+        <result column="collection_number" property="collectionNumber" />
+        <result column="complaint_or_not" property="complaintOrNot" />
+        <result column="views_number" property="viewsNumber" />
+    </resultMap>
+    <select id="getDetail" resultType="upc.c505.modular.prosperity.entity.ProsperityInterconnectionMarket">
+        SELECT * FROM prosperity_interconnection_market WHERE id = #{id}
+    </select>
+
+</mapper>

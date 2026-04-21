@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainAiSimulationReverseAssessmentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainAiSimulationReverseAssessment">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="process_tracking_number" property="processTrackingNumber" />
+        <result column="completed_records_number" property="completedRecordsNumber" />
+        <result column="work_score" property="workScore" />
+        <result column="performance_score" property="performanceScore" />
+        <result column="basic_score" property="basicScore" />
+        <result column="total_score" property="totalScore" />
+        <result column="k_value" property="KValue" />
+        <result column="rank" property="rank" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="creator" property="creator" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="people_enterprise_id" property="peopleEnterpriseId" />
+        <result column="basic_salary" property="basicSalary" />
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainExtendedTableMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainExtendedTable">
+        <id column="id" property="id" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="merchant_promises" property="merchantPromises" />
+        <result column="company_introduction" property="companyIntroduction" />
+        <result column="phone_number_one" property="phoneNumberOne" />
+        <result column="phone_number_two" property="phoneNumberTwo" />
+        <result column="wechat_QR_code" property="wechatQrCode" />
+        <result column="dark_logo" property="darkLogo" />
+        <result column="light_color_logo" property="lightColorLogo" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+        <result column="message_authorization_notification" property="messageAuthorizationNotification" />
+        <result column="color_version" property="colorVersion" />
+        <result column="mini_program_homepage_configuration" property="miniProgramHomepageConfiguration" />
+        <result column="mini_program_homepage_configuration" property="miniProgramShareDisplayConfiguration" />
+        <result column="mini_program_share_homepage_configuration" property="miniProgramShareHomepageConfiguration" />
+        <result column="work_record_marks" property="workRecordMarks" />
+        <result column="sign_contract_marks" property="signContractMarks" />
+        <result column="background_picture" property="backgroundPicture" />
+        <result column="product_list_style" property="productListStyle" />
+        <result column="product_detail_style" property="productDetailStyle" />
+        <result column="display_heat" property="displayHeat" />
+        <result column="display_brand_story" property="displayBrandStory" />
+        <result column="basic_info" property="basicInfo" />
+        <result column="share_display_title" property="shareDisplayTitle" />
+    </resultMap>
+
+</mapper>

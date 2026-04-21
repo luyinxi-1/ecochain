@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="upc.c505.modular.ecochain.mapper.EcoChainProductManagerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="upc.c505.modular.ecochain.entity.EcoChainProductManager">
+        <id column="id" property="id" />
+        <result column="product_name" property="productName" />
+        <result column="status" property="status" />
+        <result column="top_up" property="topUp" />
+        <result column="detailed_introduction" property="detailedIntroduction" />
+        <result column="picture" property="picture" />
+        <result column="product_tag_name" property="productTagName" />
+        <result column="product_parameter_name" property="productParameterName" />
+        <result column="product_classification_name" property="productClassificationName" />
+        <result column="eco_chain_product_tag_id" property="ecoChainProductTagId" />
+        <result column="eco_chain_product_parameter_id" property="ecoChainProductParameterId" />
+        <result column="eco_chain_product_classification_id" property="ecoChainProductClassificationId" />
+        <result column="redirect_platform" property="redirectPlatform" />
+        <result column="redirect_platform_url" property="redirectPlatformUrl" />
+        <result column="can_redirect" property="canRedirect" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="social_credit_code" property="socialCreditCode" />
+        <result column="configured_enterprise_name" property="configuredEnterpriseName" />
+        <result column="configured_social_credit_code" property="configuredSocialCreditCode" />
+        <result column="contact_name" property="contactName" />
+        <result column="contact_phone" property="contactPhone" />
+        <result column="area_id" property="areaId" />
+        <result column="longitude" property="longitude" />
+        <result column="latitude" property="latitude" />
+        <result column="address" property="address" />
+        <result column="tag_one" property="tagOne" />
+        <result column="tag_two" property="tagTwo" />
+        <result column="type" property="type" />
+        <result column="creator" property="creator" />
+        <result column="add_datetime" property="addDatetime" />
+        <result column="operator" property="operator" />
+        <result column="operation_datetime" property="operationDatetime" />
+    </resultMap>
+
+</mapper>
